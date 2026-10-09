@@ -1,0 +1,258 @@
+{
+ "format": "pensionszuverdienstrechner-de-werte",
+ "version": 1,
+ "erstellt": "2026-10-09T23:08:00+00:00",
+ "jahr": 2026,
+ "quellen": [
+  "Gesetz: § 32a EStG – Einkommensteuertarif",
+  "Gesetz: § 3 SolzG – Solidaritätszuschlag",
+  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt",
+  "finanz-tools.de – Steuerformeln 2026",
+  "lohn-info.de – Sozialversicherung 2026",
+  "Haufe – Beitragsbemessungsgrenzen",
+  "smart-rechner.de – Hinzuverdienst EM-Rente",
+  "steuertipps.de – Witwenrente"
+ ],
+ "fehler": [],
+ "werte": {
+  "soli_freigrenze": {
+   "wert": 20350.0,
+   "jahr_ok": false,
+   "kontext": "Gesetz: § 3 SolzG – Solidaritätszuschlag: …in anderen Fällen 20.350 Euro übersteigt. Auf die Einkommensteuer nach §…",
+   "quellen": [
+    "Gesetz: § 3 SolzG – Solidaritätszuschlag"
+   ]
+  },
+  "uebungsleiter_max": {
+   "wert": 3300.0,
+   "jahr_ok": false,
+   "kontext": "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: …Schweiz belegen ist, oder einer unter § 5 Absatz 1 Nummer 9 des Körperschaftsteuergesetzes fallenden Einrichtung bis zur Höhe von insgesamt 3.300 Euro im Jahr. 2 Überschreiten die Einnahmen für d…",
+   "quellen": [
+    "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt"
+   ]
+  },
+  "kv_satz": {
+   "wert": 14.6,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …allgemeinen Beitragssatzes in der gesetzlichen Krankenversicherung (14,6%), zuzüglich des durchschnittlichen Zusatzbeitrag…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "kv_satz_erm": {
+   "wert": 14.0,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …ermäßigten Beitragssatz gibt es eine verbindliche Beitragsuntergrenze von 14,0 Prozent (Arbeitnehmer und Arbeitgeber je 7,0 Proz…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "kv_zusatz": {
+   "wert": 2.9,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …durchschnittliche Zusatzbeitragssatz in der gesetzlichen Krankenversicherung steigt für das Jahr 2026 auf 2,9 Prozent (Veröffentlichung im Bundesanzeiger am 10…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "pv_satz": {
+   "wert": 3.6,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …Pflegeversicherung (3,60%) und zur Arbeitsförderung (2,6%) sowie des all…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "pv_kinderlos": {
+   "wert": 0.6,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …ist zum 1. Juli 2023 von 0,35 Prozent auf 0,60 Prozent gestiegen. Beitragssatz Arbeitnehmer mit Beitragszuschlag (außer Sachsen): 1,80% + 0,60% = 2,40% Beitragssatz Arbeitnehmer mit Beitragsz…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "rv_satz": {
+   "wert": 18.6,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …Rentenversicherung 18,6 Prozent und in der knappschaftlichen Rentenversic…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "kv_bbg": {
+   "wert": 69750.0,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …Beitragsbemessungsgrenzen 2026 alte und neue Länder (einheitliche Grenze) Kranken- und Pflegeversicherung (jährlich) 69.750,00 € Kranken- und Pflegeversicherung (monatlich) 5…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "rv_bbg": {
+   "wert": 101400.0,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …cherung (jährlich) 69.750,00 € Kranken- und Pflegeversicherung (monatlich) 5.812,50 € Renten- und Arbeitslosenversicherung (jährlich) 101.400,00 € Renten- und Arbeitslosenversicherung (monatli…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026"
+   ]
+  },
+  "bezugsgroesse": {
+   "wert": 47460.0,
+   "jahr_ok": true,
+   "kontext": "smart-rechner.de – Hinzuverdienst EM-Rente: …Bezugsgröße West beträgt 2026: 47.460 Euro Monatlich sind dies 47.460 / 12 = 3.955 Eur…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026",
+    "smart-rechner.de – Hinzuverdienst EM-Rente"
+   ]
+  },
+  "gfg_monat": {
+   "wert": 603.0,
+   "jahr_ok": true,
+   "kontext": "lohn-info.de – Sozialversicherung 2026: …Geringfügigkeitsgrenze von 603 Euro ( 603-Euro-Job ). 603,00 € Mindestbemessun…",
+   "quellen": [
+    "lohn-info.de – Sozialversicherung 2026",
+    "steuertipps.de – Witwenrente"
+   ]
+  },
+  "em_voll_grenze": {
+   "wert": 20763.75,
+   "jahr_ok": false,
+   "kontext": "smart-rechner.de – Hinzuverdienst EM-Rente: …3/8 × 14 × 3.955 Euro = 20.763,75 Euro jährlich entspricht 1.730,31 Euro monatlich…",
+   "quellen": [
+    "smart-rechner.de – Hinzuverdienst EM-Rente"
+   ]
+  },
+  "em_teil_min": {
+   "wert": 41527.5,
+   "jahr_ok": true,
+   "kontext": "smart-rechner.de – Hinzuverdienst EM-Rente: …6/8 × 14 × 3.955 Euro = 41.527,50 Euro entspricht 3.460,63 Euro monatlich Persön…",
+   "quellen": [
+    "smart-rechner.de – Hinzuverdienst EM-Rente"
+   ]
+  },
+  "witwe_freibetrag": {
+   "wert": 1122.53,
+   "jahr_ok": true,
+   "kontext": "steuertipps.de – Witwenrente: …Freibetrag 1.122,53 Euro) Einkommensart Brutto-Grenze Arbeitnehm…",
+   "quellen": [
+    "steuertipps.de – Witwenrente"
+   ]
+  },
+  "est_a": {
+   "wert": 914.51,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_c1": {
+   "wert": 1400.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_b": {
+   "wert": 173.1,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_c2": {
+   "wert": 2397.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_t1": {
+   "wert": 1034.87,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_k4": {
+   "wert": 11135.63,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_s4": {
+   "wert": 42.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_k5": {
+   "wert": 19470.38,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_s5": {
+   "wert": 45.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_g0": {
+   "wert": 12348.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_g1": {
+   "wert": 17799.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_g2": {
+   "wert": 69878.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  },
+  "est_g3": {
+   "wert": 277825.0,
+   "jahr_ok": true,
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
+    "finanz-tools.de – Steuerformeln 2026"
+   ]
+  }
+ }
+}

@@ -1,0 +1,1831 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Pensionszuverdienstrechner Deutschland</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: Arbeitsfläche wie ein Formular – Eingaben links, Ergebnis rechts; schmal: untereinander */
+:root {
+  --bg: #eef2f4; --surface: #ffffff; --surface2: #f6f8f9; --ink: #16242c; --muted: #5a6a74; --line: #d3dce1;
+  --accent: #1e5d78; --accent-ink: #ffffff; --accent-soft: #e2eef3;
+  --ok: #1d7343; --ok-bg: #e5f4ea; --warn: #9a5a00; --warn-bg: #fdf1dc; --bad: #ad2a1f; --bad-bg: #fbe6e3;
+  --info: #1e5d78; --info-bg: #e6f0f5; --tip-bg: #1f2d35; --tip-ink: #f1f5f7;
+  --c-netto: #1d7343; --c-svs: #ad2a1f; --c-est: #2c62b8; --c-rk: #7b4bb3; --shade: rgba(173, 42, 31, .10);
+  --f-ui: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --f-num: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --r: 8px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e171c; --surface: #15212a; --surface2: #1a2832; --ink: #e2eaee; --muted: #93a6b1; --line: #2a3b46;
+  --accent: #6fb6d3; --accent-ink: #0a1a22; --accent-soft: #1b3442;
+  --ok: #62c58e; --ok-bg: #16301f; --warn: #e3a64c; --warn-bg: #33270f; --bad: #f08076; --bad-bg: #3a1a17;
+  --info: #7cc0dc; --info-bg: #142c38; --tip-bg: #e9eff2; --tip-ink: #13202a;
+  --c-netto: #62c58e; --c-svs: #f08076; --c-est: #82a9ee; --c-rk: #b48ee8; --shade: rgba(240, 128, 118, .14); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e171c; --surface: #15212a; --surface2: #1a2832; --ink: #e2eaee; --muted: #93a6b1; --line: #2a3b46;
+  --accent: #6fb6d3; --accent-ink: #0a1a22; --accent-soft: #1b3442;
+  --ok: #62c58e; --ok-bg: #16301f; --warn: #e3a64c; --warn-bg: #33270f; --bad: #f08076; --bad-bg: #3a1a17;
+  --info: #7cc0dc; --info-bg: #142c38; --tip-bg: #e9eff2; --tip-ink: #13202a;
+  --c-netto: #62c58e; --c-svs: #f08076; --c-est: #82a9ee; --c-rk: #b48ee8; --shade: rgba(240, 128, 118, .14); color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.45 var(--f-ui); }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 12px 40px; }
+h1, h2, h3 { text-wrap: balance; margin: 0 }
+h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em }
+h2 { font-size: 1.05rem; font-weight: 700 }
+h3 { font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted) }
+a { color: var(--accent) }
+.num { font-family: var(--f-num); font-variant-numeric: tabular-nums }
+.muted { color: var(--muted) }
+.small { font-size: .85rem }
+
+header.top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding-block: 6px 12px }
+header.top .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; padding: 3px 10px; border-radius: 99px;
+  background: var(--surface); border: 1px solid var(--line); color: var(--muted) }
+.chip b { color: var(--ink); font-weight: 600 }
+.chip.ok { background: var(--ok-bg); border-color: transparent; color: var(--ok) }
+.chip.warn { background: var(--warn-bg); border-color: transparent; color: var(--warn) }
+.chip.bad { background: var(--bad-bg); border-color: transparent; color: var(--bad) }
+
+.banner { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 14px; border-radius: var(--r);
+  margin-bottom: 12px; font-weight: 600 }
+.banner.warn { background: var(--warn-bg); color: var(--warn) }
+.banner.bad { background: var(--bad-bg); color: var(--bad) }
+.banner .txt { flex: 1 1 320px; min-width: 0 }
+.banner .txt div + div { font-weight: 500 }
+
+.werteleiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 8px 12px; border-radius: var(--r);
+  background: var(--info-bg); margin-bottom: 12px }
+.werteleiste.neu { background: var(--warn-bg) }
+.wl-text { flex: 1 1 320px; min-width: 0; font-size: .85rem; color: var(--info); white-space: pre-line }
+.werteleiste.neu .wl-text { color: var(--warn); font-weight: 600 }
+button.btn.umschalter { min-width: 230px }
+.ergmodus { display: inline-block; width: 15.5em; text-align: center; white-space: nowrap; font-size: .8rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 99px; background: var(--info-bg); color: var(--info) }
+.ergmodus.neu { background: var(--warn); color: var(--surface) }
+button.btn.umschalter.neu { background: var(--warn); color: var(--surface); border-color: var(--warn) }
+nav.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; margin-bottom: 16px }
+nav.tabs button { appearance: none; border: 0; background: none; font: inherit; font-weight: 600; color: var(--muted);
+  padding: 10px 14px; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap }
+nav.tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent) }
+nav.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px }
+
+.grid-calc { display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: 20px; align-items: start }
+@media (max-width: 860px) { .grid-calc { grid-template-columns: minmax(0, 1fr) } }
+.stack { display: flex; flex-direction: column; gap: 12px; min-width: 0 }
+
+fieldset.box { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); padding: 10px 14px 12px; margin: 0; min-width: 0 }
+fieldset.box legend { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); padding: 0 6px }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) 118px 50px; align-items: center; gap: 4px 8px; padding-block: 3px }
+.row label { min-width: 0 }
+.row .unit { font-size: .8rem; color: var(--muted) }
+.row.full { grid-template-columns: minmax(0, 1fr) }
+.row.dis { opacity: .45 }
+input[type=text], select, textarea { font: inherit; color: var(--ink); background: var(--surface2); border: 1px solid var(--line);
+  border-radius: 6px; padding: 5px 8px; width: 100%; min-width: 0 }
+input.zahl { text-align: right; font-family: var(--f-num); font-variant-numeric: tabular-nums }
+input.fehler { border-color: var(--bad); background: var(--bad-bg) }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+select { padding: 5px 6px }
+.check { display: flex; gap: 8px; align-items: flex-start; padding-block: 3px; cursor: pointer }
+.check input { margin-top: 3px; accent-color: var(--accent) }
+.check.ein { padding-left: 24px }
+.check.dis { opacity: .45; cursor: default }
+.hint { font-size: .82rem; color: var(--muted); padding-top: 2px }
+
+button.btn { font: inherit; font-size: .9rem; font-weight: 600; border-radius: 6px; padding: 6px 12px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink) }
+button.btn:hover { border-color: var(--accent) }
+button.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+button.btn.klein { font-size: .8rem; padding: 3px 8px }
+button.btn:disabled { opacity: .5; cursor: default }
+.btns { display: flex; flex-wrap: wrap; gap: 6px }
+
+/* Ergebnis */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 14px }
+.tile .k { font-size: .78rem; color: var(--muted); font-weight: 600 }
+.tile .v { font: 600 1.45rem/1.2 var(--f-num); font-variant-numeric: tabular-nums; margin-top: 2px }
+.tile .s { font-size: .78rem; color: var(--muted) }
+.tile.haupt { border-color: var(--ok); }
+.tile.haupt .v { color: var(--ok) }
+.meldung { padding: 9px 12px; border-radius: var(--r); font-size: .9rem }
+.meldung.rot { background: var(--bad-bg); color: var(--bad); font-weight: 600 }
+.meldung.orange { background: var(--warn-bg); color: var(--warn); font-weight: 600 }
+.meldung.info { background: var(--info-bg); color: var(--info) }
+.bericht { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden }
+.bericht table { width: 100%; border-collapse: collapse }
+.bericht th { text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--accent);
+  padding: 12px 14px 4px; background: var(--surface) }
+.bericht td { padding: 3px 14px; border-top: 1px solid var(--surface2); vertical-align: top }
+.bericht td.w { text-align: right; white-space: nowrap; font-family: var(--f-num); font-variant-numeric: tabular-nums }
+.bericht td.x { color: var(--muted); font-size: .82rem; width: 34% }
+.bericht tr.fett td { font-weight: 700 }
+.bericht tr.gross td { font-weight: 700; font-size: 1.05rem; color: var(--ok) }
+.bericht tr[data-tip] td:first-child { text-decoration: underline dotted var(--line); text-underline-offset: 3px; cursor: help }
+@media (max-width: 560px) { .bericht td.x { display: none } }
+
+/* Tabelle */
+.tabwrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r) }
+table.daten { border-collapse: collapse; width: 100%; font-size: .86rem }
+table.daten th { position: sticky; top: 0; background: var(--surface); text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--line);
+  font-size: .75rem; color: var(--muted); white-space: nowrap; cursor: help }
+table.daten td { padding: 4px 10px; text-align: right; white-space: nowrap; font-family: var(--f-num); font-variant-numeric: tabular-nums }
+table.daten td.st { font-family: var(--f-ui); text-align: center }
+table.daten tr.s-unter, table.daten tr.s-befreit { background: var(--info-bg) }
+table.daten tr.s-unguenstig { background: var(--bad-bg) }
+table.daten tr.s-mindest { background: var(--warn-bg) }
+table.daten tr.s-ok { background: var(--ok-bg) }
+table.daten tr.s-pension { background: var(--bad-bg); color: var(--bad); font-weight: 600 }
+.legende { display: flex; flex-wrap: wrap; gap: 6px; font-size: .78rem }
+.legende span { padding: 2px 8px; border-radius: 4px }
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 8px }
+.chart svg { display: block; width: 100%; height: auto; max-width: 100% }
+.toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin-bottom: 10px }
+.toolbar label { display: flex; flex-direction: column; font-size: .8rem; color: var(--muted); gap: 2px }
+.toolbar input { width: 100px }
+
+/* Parameter */
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 430px), 1fr)); gap: 12px; align-items: start }
+.prow { display: grid; grid-template-columns: minmax(0, 1fr) 110px 62px; gap: 6px; align-items: center; padding-block: 2px }
+.prow .std { grid-column: 1 / -1; font-size: .75rem; color: var(--muted); margin-top: -3px; display: none }
+.prow.geaendert input { border-color: var(--warn) }
+.prow.geaendert .std { display: block }
+
+/* Werte prüfen */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; min-width: 0 }
+.ampel { padding: 8px 12px; border-radius: 6px; font-weight: 700 }
+.ampel.gruen { background: var(--ok-bg); color: var(--ok) }
+.ampel.gelb { background: var(--warn-bg); color: var(--warn) }
+.ampel.rot { background: var(--bad-bg); color: var(--bad) }
+ul.meld { margin: 8px 0 0; padding-left: 18px }
+ul.meld li.rot { color: var(--bad) } ul.meld li.gelb { color: var(--warn) }
+.quellen { display: grid; gap: 4px; margin: 6px 0 }
+.quellen a { display: block; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; background: var(--surface2) }
+.quellen a b { color: var(--ink) } .quellen a span { display: block; font-size: .78rem; color: var(--muted); overflow-wrap: anywhere }
+textarea { min-height: 120px; resize: vertical; font-size: .85rem }
+.cols2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; align-items: start }
+
+/* Modal */
+.modal { position: fixed; inset: 0; background: rgba(10, 20, 26, .55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50 }
+.modal .fenster { background: var(--surface); color: var(--ink); border-radius: 10px; width: min(1100px, 100%); max-height: 92%; display: flex; flex-direction: column; overflow: hidden }
+.modal .kopf { padding: 14px 16px 8px; border-bottom: 1px solid var(--line) }
+.modal .inhalt { padding: 10px 16px; overflow: auto; flex: 1 1 auto; min-height: 0 }
+.modal .fuss { padding: 10px 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.modal .fuss .rechts { margin-left: auto; display: flex; gap: 8px }
+table.vgl { border-collapse: collapse; width: 100%; font-size: .85rem }
+table.vgl th { text-align: left; font-size: .72rem; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap }
+table.vgl td { padding: 4px 8px; border-bottom: 1px solid var(--surface2) }
+table.vgl td.w { text-align: right; font-family: var(--f-num); white-space: nowrap }
+table.vgl tr.abw { background: var(--warn-bg) }
+table.vgl tr.gleich { color: var(--muted) }
+table.vgl tr.sel { outline: 2px solid var(--accent); outline-offset: -2px }
+.fund { background: var(--surface2); border-radius: 6px; padding: 8px 10px; font-size: .82rem; margin-top: 8px; overflow-wrap: anywhere }
+
+/* Hilfe */
+.hilfe { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; align-items: start }
+@media (max-width: 760px) { .hilfe { grid-template-columns: minmax(0, 1fr) } .hilfe nav { position: static !important } }
+.hilfe nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 8px); display: flex; flex-direction: column; gap: 2px; font-size: .88rem }
+.hilfe nav a { text-decoration: none; padding: 4px 8px; border-radius: 4px; color: var(--muted) }
+.hilfe nav a:hover { background: var(--accent-soft); color: var(--accent) }
+.hilfe article { max-width: 72ch }
+.hilfe article h2 { margin: 26px 0 8px; scroll-margin-top: 12px }
+.hilfe article p, .hilfe article li { margin: 6px 0 }
+.hilfe .box { background: var(--info-bg); color: var(--info); padding: 8px 12px; border-radius: 6px }
+
+/* Hilfeblase */
+#tip { position: fixed; z-index: 100; max-width: min(420px, calc(100vw - 24px)); background: var(--tip-bg); color: var(--tip-ink);
+  font-size: .82rem; line-height: 1.4; padding: 8px 10px; border-radius: 6px; pointer-events: none; white-space: pre-line;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .25) }
+.i { display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--line);
+  font-size: .7rem; color: var(--muted); cursor: help; margin-left: 4px; vertical-align: 1px; flex: none }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+  background: var(--tip-bg); color: var(--tip-ink); padding: 9px 16px; border-radius: 99px; font-size: .88rem; z-index: 120 }
+@media (prefers-reduced-motion: no-preference) { .toast { transition: opacity .3s } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Pensionszuverdienstrechner Deutschland</h1>
+      <div class="muted small">Gesetzliche Rente + selbständiger Zuverdienst · Freiberufler oder Gewerbe</div>
+    </div>
+    <div class="chips">
+      <span class="chip" id="chipJahr" data-tip="Für dieses Jahr gelten die eingestellten Rechenwerte.">Werte <b id="chipJahrW">2026</b></span>
+      <span class="chip" id="chipStatus" data-tip="Ergebnis der Gültigkeitsprüfung – Details im Reiter „Werte prüfen“.">Werte geprüft</span>
+      <span class="chip" id="chipSpeicher" data-tip="">lokal gespeichert</span>
+    </div>
+  </header>
+
+  <div class="werteleiste" id="werteleiste">
+    <button class="btn primary" type="button" id="btnErmitteln" data-tip="Holt die aktuellen Rechenwerte aus allen Quellen (Gesetzestexte, Sozialversicherungs-Übersichten …). Neue Werte werden als ENTWURF vorbelegt – gespeichert wird erst mit „Neue Werte speichern“.">🔍 Aktuelle Werte ermitteln</button>
+    <div class="wl-text" id="wlText"></div>
+    <div class="btns" id="wlKnoepfe" hidden>
+      <button class="btn umschalter" type="button" id="btnUmschalten" data-tip="Schaltet die gesamte Berechnung zwischen den gespeicherten (alten) und den gefundenen (neuen) Werten um – zum direkten Vergleich."></button>
+      <button class="btn primary" type="button" id="btnEntwurfSpeichern" data-tip="Übernimmt die neuen Werte dauerhaft. Die bisherigen Werte werden vorher automatisch in der Historie gesichert.">💾 Neue Werte speichern</button>
+      <button class="btn" type="button" id="btnEntwurfAuswahl" data-tip="Zeigt jeden gefundenen Wert mit Fundstelle. Hier wählen Sie, welche Werte in den Entwurf übernommen werden.">Auswahl…</button>
+      <button class="btn" type="button" id="btnEntwurfVerwerfen" data-tip="Löscht den Entwurf. Die gespeicherten Werte bleiben unverändert.">Verwerfen</button>
+    </div>
+  </div>
+
+  <div class="banner" id="banner" hidden>
+    <div class="txt" id="bannerTxt"></div>
+    <button class="btn primary" id="bannerPruefen" type="button">Jetzt prüfen / aktualisieren</button>
+    <button class="btn" id="bannerSpaeter" type="button">In 7 Tagen erinnern</button>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" type="button" data-tab="berechnung" aria-selected="true">Berechnung</button>
+    <button role="tab" type="button" data-tab="tabelle" aria-selected="false">Tabelle &amp; Diagramm</button>
+    <button role="tab" type="button" data-tab="parameter" aria-selected="false">Parameter</button>
+    <button role="tab" type="button" data-tab="werte" aria-selected="false">Werte prüfen &amp; Historie</button>
+    <button role="tab" type="button" data-tab="hilfe" aria-selected="false">Hilfe</button>
+  </nav>
+
+  <!-- ============================ BERECHNUNG ============================ -->
+  <section id="tab-berechnung" class="grid-calc">
+    <form class="stack" id="eingabe" autocomplete="off">
+      <fieldset class="box">
+        <legend>Gesetzliche Rente</legend>
+        <div class="row full" data-tip="Welche Rente beziehen Sie?&#10;• Altersrenten (auch vorgezogene): unbegrenzt hinzuverdienen&#10;• Volle EM-Rente: Grenze 20.763,75 €/Jahr, darüber 40 % Anrechnung&#10;• Teilweise EM-Rente: individuelle Grenze, mind. 41.527,50 €/Jahr&#10;• Witwen-/Witwerrente: Einkommen über dem Freibetrag wird zu 40 % angerechnet">
+          <label for="rentenart" class="small muted">Rentenart</label>
+          <select id="rentenart">
+            <option value="regelalter">Regelaltersrente</option>
+            <option value="langjaehrig">Altersrente für langjährig Versicherte (vorgezogen)</option>
+            <option value="besonders">Altersrente für besonders langjährig Versicherte (45 Jahre)</option>
+            <option value="schwerbehindert">Altersrente für schwerbehinderte Menschen</option>
+            <option value="em_voll">Rente wegen voller Erwerbsminderung</option>
+            <option value="em_teil">Rente wegen teilweiser Erwerbsminderung</option>
+            <option value="witwe">Witwen-/Witwerrente (große, neues Recht)</option>
+          </select>
+        </div>
+        <div class="hint"><a href="#h-rentenart" data-hilfe="h-rentenart">Wie viel darf ich bei meiner Rentenart hinzuverdienen?</a></div>
+        <div class="row full" data-tip="Wie geben Sie die Rente ein?&#10;• Brutto pro Monat oder Jahr laut Rentenbescheid&#10;• Zahlbetrag (nach KV/PV) – das Brutto wird zurückgerechnet">
+          <select id="rente_modus" aria-label="Eingabeart Rente">
+            <option value="brutto_monat">Brutto pro Monat (laut Rentenbescheid)</option>
+            <option value="brutto_jahr">Brutto pro Jahr</option>
+            <option value="netto_monat">Zahlbetrag pro Monat (wird zurückgerechnet)</option>
+          </select>
+        </div>
+        <div class="row" data-tip="Höhe der gesetzlichen Rente laut gewählter Eingabeart."><label for="rente_betrag">Rente</label><input type="text" inputmode="decimal" class="zahl" id="rente_betrag"><span class="unit" id="u_rente">€/Mon.</span></div>
+        <div class="hint" id="pensionInfo"></div>
+        <div class="row" data-tip="Jahr des Rentenbeginns – bestimmt den steuerpflichtigen Anteil der Rente (2024: 83 %, 2025: 83,5 %, 2026: 84 %)."><label for="rentenbeginn">Rentenbeginn (Jahr)</label><input type="text" inputmode="numeric" class="zahl" id="rentenbeginn"><span class="unit"></span></div>
+        <div class="row" data-tip="Steuerfreier Teil der Rente in €/Jahr laut Steuerbescheid (ab dem Jahr nach Rentenbeginn fest). 0 = wird aus dem Besteuerungsanteil geschätzt."><label for="rentenfreibetrag">Rentenfreibetrag lt. Bescheid (0 = auto)</label><input type="text" inputmode="decimal" class="zahl" id="rentenfreibetrag"><span class="unit">€/Jahr</span></div>
+        <div class="row" data-tip="Für den Altersentlastungsbetrag (ab 64) und die Prüfung der Regelaltersgrenze."><label for="geburtsjahr">Geburtsjahr</label><input type="text" inputmode="numeric" class="zahl" id="geburtsjahr"><span class="unit"></span></div>
+        <div class="row" data-tip="Nur bei teilweiser Erwerbsminderung: Ihre individuelle Hinzuverdienstgrenze laut Rentenbescheid. 0 = Mindestgrenze (2026: 41.527,50 €)."><label for="em_grenze_indiv">Indiv. Hinzuverdienstgrenze (teilw. EM)</label><input type="text" inputmode="decimal" class="zahl" id="em_grenze_indiv"><span class="unit">€/Jahr</span></div>
+        <div class="row" data-tip="Nur bei Witwen-/Witwerrente: weiteres anrechenbares Einkommen pro Monat, bereits pauschal bereinigt (z. B. eigene Rente minus 14 %)."><label for="witwe_sonstiges">Sonst. anrechenbares Einkommen</label><input type="text" inputmode="decimal" class="zahl" id="witwe_sonstiges"><span class="unit">€/Mon.</span></div>
+      </fieldset>
+
+      <fieldset class="box">
+        <legend>Tätigkeit, Versicherung &amp; Steuer</legend>
+        <label class="check" data-tip="Freiberufler (§ 18 EStG): keine Gewerbesteuer, keine Gewerbeanmeldung (z. B. Lehrer/Dozenten, Autoren, Künstler, Ingenieure, oft IT-Berater)."><input type="radio" name="gewerbe" id="gewerbe0" value="0"> Freiberufler – keine Gewerbesteuer</label>
+        <label class="check" data-tip="Gewerbetreibender: Gewerbeanmeldung, Gewerbesteuer ab 24.500 € Gewinn (wird größtenteils auf die Einkommensteuer angerechnet)."><input type="radio" name="gewerbe" id="gewerbe1" value="1"> Gewerbetreibender – Gewerbesteuer</label>
+        <div class="row" data-tip="Gewerbesteuer-Hebesatz Ihrer Gemeinde (meist 380–490 %)."><label for="hebesatz">Gewerbesteuer-Hebesatz</label><input type="text" inputmode="decimal" class="zahl" id="hebesatz"><span class="unit">%</span></div>
+        <div class="row full" data-tip="Wie sind Sie krankenversichert?&#10;• KVdR: Arbeitseinkommen bis 197,75 €/Monat beitragsfrei, darüber KV 14,6 % + Zusatzbeitrag und PV auf das ganze Arbeitseinkommen&#10;• Freiwillig: Beiträge auf alle Einnahmen&#10;• Privat: Zuverdienst ändert den Beitrag nicht">
+          <label for="kv_art" class="small muted">Krankenversicherung</label>
+          <select id="kv_art">
+            <option value="kvdr">Gesetzlich – pflichtversichert als Rentner (KVdR)</option>
+            <option value="freiwillig">Gesetzlich – freiwillig versichert</option>
+            <option value="privat">Privat versichert</option>
+          </select>
+        </div>
+        <div class="row" data-tip="Nur privat versichert: monatlicher Beitrag inkl. Pflegepflichtversicherung (die Rentenversicherung zahlt einen Zuschuss)."><label for="pkv_beitrag">PKV-Beitrag (inkl. Pflege)</label><input type="text" inputmode="decimal" class="zahl" id="pkv_beitrag"><span class="unit">€/Mon.</span></div>
+        <label class="check" data-tip="Kinderlose zahlen 0,6 % Zuschlag zur Pflegeversicherung."><input type="checkbox" id="kinderlos"> Kinderlos (Zuschlag Pflegeversicherung)</label>
+        <label class="check" id="lbl_rv_pflicht" data-tip="Rentenversicherungspflicht als Selbständiger, z. B. Lehrer/Dozent, Pflegeperson, Hebamme, Handwerker oder arbeitnehmerähnlich (ein Hauptauftraggeber). Entfällt mit Regelaltersgrenze + Vollrente."><input type="checkbox" id="rv_pflicht"> Rentenversicherungspflichtig (z. B. Lehrer/Dozent)</label>
+        <div class="row full" data-tip="Kirchensteuer: 8 % in Bayern und Baden-Württemberg, sonst 9 % der Einkommensteuer.">
+          <label for="kirchensteuer" class="small muted">Kirchensteuer</label>
+          <select id="kirchensteuer"><option value="0">keine</option><option value="8">8 % (Bayern, Baden-Württemberg)</option><option value="9">9 % (übrige Länder)</option></select>
+        </div>
+        <label class="check" data-tip="Zusammenveranlagung mit Ehe-/Lebenspartner (Splittingtarif)."><input type="checkbox" id="zusammen"> Zusammenveranlagung (Ehe/Partnerschaft)</label>
+        <div class="row" data-tip="Zu versteuerndes Einkommen der Partnerin / des Partners (für das Splitting)."><label for="partner_zve">Zu verst. Einkommen Partner/in</label><input type="text" inputmode="decimal" class="zahl" id="partner_zve"><span class="unit">€/Jahr</span></div>
+        <div class="hint"><a href="#h-freiberufler" data-hilfe="h-freiberufler">Freiberufler oder Gewerbe – was trifft auf mich zu?</a></div>
+      </fieldset>
+
+      <fieldset class="box">
+        <legend>Zuverdienst</legend>
+        <div class="row full" data-tip="Wie wollen Sie den Zuverdienst angeben?&#10;• Stundensatz × Stunden/Woche × Wochen&#10;• Jahres- oder Monatsumsatz&#10;• Gewinn direkt (Einnahmen minus Ausgaben)">
+          <select id="zuv_modus" aria-label="Eingabeart Zuverdienst">
+            <option value="stunden">Stundensatz × Stunden × Wochen</option>
+            <option value="umsatz_jahr">Jahresumsatz</option>
+            <option value="umsatz_monat">Monatsumsatz (× 12)</option>
+            <option value="gewinn_jahr">Gewinn direkt (Jahr)</option>
+          </select>
+        </div>
+        <div class="row" data-z="stunden" data-tip="Ihr Honorar pro Stunde OHNE Umsatzsteuer."><label for="stundensatz">Stundensatz (ohne USt)</label><input type="text" inputmode="decimal" class="zahl" id="stundensatz"><span class="unit">€/h</span></div>
+        <div class="row" data-z="stunden" data-tip="Durchschnittliche verrechenbare Stunden pro Arbeitswoche."><label for="std_woche">Stunden pro Woche</label><input type="text" inputmode="decimal" class="zahl" id="std_woche"><span class="unit">h</span></div>
+        <div class="row" data-z="stunden" data-tip="Arbeitswochen pro Jahr (52 minus Urlaub, Feiertage, Krankheit) – typisch 44–48."><label for="wochen">Arbeitswochen pro Jahr</label><input type="text" inputmode="decimal" class="zahl" id="wochen"><span class="unit">Wo.</span></div>
+        <div class="row" data-z="umsatz_jahr" data-tip="Summe aller Honorare im Jahr (ohne Umsatzsteuer)."><label for="umsatz_jahr">Jahresumsatz</label><input type="text" inputmode="decimal" class="zahl" id="umsatz_jahr"><span class="unit">€</span></div>
+        <div class="row" data-z="umsatz_monat" data-tip="Durchschnittliches Honorar pro Monat – wird × 12 gerechnet."><label for="umsatz_monat">Monatsumsatz</label><input type="text" inputmode="decimal" class="zahl" id="umsatz_monat"><span class="unit">€</span></div>
+        <div class="row" data-z="gewinn_jahr" data-tip="Gewinn = Einnahmen minus Betriebsausgaben. Betriebsausgaben-Felder werden dann nicht verwendet."><label for="gewinn_jahr">Gewinn (Einnahmen − Ausgaben)</label><input type="text" inputmode="decimal" class="zahl" id="gewinn_jahr"><span class="unit">€</span></div>
+        <div class="row" data-tip="Teil der Einnahmen, der als Übungsleiterfreibetrag (max. 3.300 €) bzw. Ehrenamtspauschale (max. 960 €) steuer- und beitragsfrei ist."><label for="steuerfrei_pausch">Davon steuerfrei (Übungsleiter/Ehrenamt)</label><input type="text" inputmode="decimal" class="zahl" id="steuerfrei_pausch"><span class="unit">€/Jahr</span></div>
+      </fieldset>
+
+      <fieldset class="box" id="boxBA">
+        <legend>Betriebsausgaben</legend>
+        <div class="row full" data-tip="Wie werden die Betriebsausgaben ermittelt?&#10;• Tatsächliche Ausgaben (€/Jahr, €/Monat, %)&#10;• Pauschale nebenberuflich 25 % (max. 900 €) für Lehre, Schreiben, Kunst, Wissenschaft&#10;• Pauschale hauptberufliche Schriftsteller/Journalisten 30 % (max. 3.600 €)">
+          <select id="ba_modus" aria-label="Art der Betriebsausgaben">
+            <option value="betrag_jahr">Tatsächliche Ausgaben € / Jahr</option>
+            <option value="betrag_monat">Tatsächliche Ausgaben € / Monat</option>
+            <option value="prozent">Prozent vom Umsatz</option>
+            <option value="pausch_neben">Pauschale nebenberuflich (25 %, max. 900 €)</option>
+            <option value="pausch_haupt">Pauschale Schriftsteller/Journalist (30 %, max. 3.600 €)</option>
+          </select>
+        </div>
+        <div class="row" data-b="betrag" data-tip="Summe der tatsächlichen Ausgaben: z. B. Laptop/Software (AfA), Internet, Fahrtkosten, Fachliteratur, Fortbildung, Steuerberatung."><label for="ba_betrag">Betriebsausgaben</label><input type="text" inputmode="decimal" class="zahl" id="ba_betrag"><span class="unit" id="u_ba">€/Jahr</span></div>
+        <div class="row" data-b="prozent" data-tip="Betriebsausgaben als Prozentsatz vom Umsatz."><label for="ba_prozent">Ausgaben in % vom Umsatz</label><input type="text" inputmode="decimal" class="zahl" id="ba_prozent"><span class="unit">%</span></div>
+      </fieldset>
+
+      <fieldset class="box">
+        <legend>Szenarien &amp; Export</legend>
+        <div class="row full" data-tip="Name eines Szenarios eingeben oder aus der Liste wählen.">
+          <input type="text" id="szenarioName" list="szenarioListe" placeholder="Name des Szenarios" aria-label="Name des Szenarios">
+          <datalist id="szenarioListe"></datalist>
+        </div>
+        <div class="btns" style="margin-top:6px">
+          <button class="btn klein" type="button" id="szSpeichern" data-tip="Speichert alle aktuellen Eingaben unter dem Namen.">Speichern</button>
+          <button class="btn klein" type="button" id="szLaden" data-tip="Lädt das gewählte Szenario.">Laden</button>
+          <button class="btn klein" type="button" id="szLoeschen" data-tip="Löscht das gewählte Szenario.">Löschen</button>
+          <button class="btn klein" type="button" id="berichtExport" data-tip="Speichert das Ergebnis samt Warnungen als Textdatei.">Bericht als Text</button>
+          <button class="btn klein" type="button" id="eingabenStandard" data-tip="Setzt alle Eingaben auf die Beispielwerte zurück (Parameter bleiben).">Beispielwerte</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <div class="stack" id="ergebnis" aria-live="polite">
+      <div style="display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline">
+        <h2 id="ergTitel">Ergebnis 2026</h2><span class="ergmodus" id="ergModus" hidden></span><span class="muted small" id="ergArt"></span>
+        <span class="muted small" style="margin-left:auto">Maus über eine Zeile → Erklärung</span>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="stack" id="warnungen"></div>
+      <div class="bericht"><table id="bericht"></table></div>
+      <div class="stack" id="hinweise"></div>
+    </div>
+  </section>
+
+  <!-- ============================ TABELLE ============================ -->
+  <section id="tab-tabelle" hidden>
+    <div class="toolbar">
+      <h2 id="tabTitel" style="flex:1 1 100%">Variation Stunden/Woche</h2>
+      <label data-tip="Startwert der Tabelle (Stunden/Woche bzw. Umsatz).">Von<input type="text" inputmode="decimal" class="zahl" id="tabVon"></label>
+      <label data-tip="Endwert der Tabelle.">Bis<input type="text" inputmode="decimal" class="zahl" id="tabBis"></label>
+      <label data-tip="Schrittweite zwischen den Zeilen.">Schritt<input type="text" inputmode="decimal" class="zahl" id="tabSchritt"></label>
+      <button class="btn" type="button" id="csvExport" data-tip="Tabelle als CSV-Datei für Excel speichern (Strichpunkt, Dezimalkomma).">CSV exportieren</button>
+      <div class="legende" style="margin-left:auto">
+        <span style="background:var(--info-bg)">abgabenfrei</span><span style="background:var(--bad-bg)">ungünstig</span>
+        <span style="background:var(--bad-bg);color:var(--bad);font-weight:600">Rente gekürzt</span><span style="background:var(--ok-bg)">lohnend</span>
+      </div>
+    </div>
+    <div class="chart" data-tip="Grün: Netto-Zuverdienst · Rot: KV/PV/RV + Gewerbesteuer · Blau: Mehrsteuer · Lila: Rentenkürzung. Rosa Fläche = ungünstiger Bereich knapp über der Grenze."><svg id="diagramm" viewBox="0 0 1000 320" role="img" aria-label="Diagramm Netto-Zuverdienst, Abgaben, Mehrsteuer und Rentenkürzung"></svg></div>
+    <div class="tabwrap" style="margin-top:12px"><table class="daten" id="datentabelle"></table></div>
+  </section>
+
+  <!-- ============================ PARAMETER ============================ -->
+  <section id="tab-parameter" hidden>
+    <div class="toolbar">
+      <div style="flex:1 1 320px"><h2>Rechenwerte</h2><div class="muted small">Alle Werte sind einstellbar. Beim Speichern wird der bisherige Stand automatisch in der Historie gesichert.</div></div>
+      <button class="btn primary" type="button" id="paramSpeichern" data-tip="Übernimmt die geänderten Werte. Der bisherige Stand kommt in die Historie.">Übernehmen &amp; speichern</button>
+      <button class="btn" type="button" id="paramVerwerfen" data-tip="Verwirft nicht gespeicherte Änderungen in diesem Reiter.">Änderungen verwerfen</button>
+      <button class="btn" type="button" id="paramStandard" data-tip="Setzt alle Parameter auf die eingebauten Werte 2026 zurück (vorher Sicherung in der Historie).">Standardwerte 2026</button>
+      <button class="btn" type="button" id="paramZuWerte" data-tip="Prüfen, aktualisieren, Historie.">Werte prüfen &amp; Historie</button>
+    </div>
+    <div class="pgrid" id="paramGrid"></div>
+  </section>
+
+  <!-- ============================ WERTE PRÜFEN ============================ -->
+  <section id="tab-werte" hidden>
+    <div class="cols2">
+      <div class="card stack">
+        <h2>Status der Rechenwerte</h2>
+        <div class="ampel" id="ampel"></div>
+        <div class="small muted" id="standInfo"></div>
+        <ul class="meld" id="meldungen"></ul>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) 90px 0"><label for="paramJahr">Werte gelten für Jahr</label><input type="text" inputmode="numeric" class="zahl" id="paramJahr"><span></span></div>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) 90px 0" data-tip="Nach so vielen Tagen ohne Prüfung erscheint der Hinweisbalken."><label for="pruefIntervall">Prüfintervall (Tage)</label><input type="text" inputmode="numeric" class="zahl" id="pruefIntervall"><span></span></div>
+        <div class="btns"><button class="btn primary" type="button" id="alsGeprueft" data-tip="Speichert das heutige Datum als Prüfdatum.">✔ Werte sind geprüft und aktuell</button></div>
+      </div>
+
+      <div class="card stack">
+        <h2>Aktuelle Werte ermitteln</h2>
+        <div class="row" style="grid-template-columns:minmax(0,1fr) 90px 0" data-tip="Für welches Jahr sollen Werte gesucht werden? Zahlen, bei denen ein anderes Jahr steht, werden verworfen."><label for="zieljahr">Werte suchen für Jahr</label><input type="text" inputmode="numeric" class="zahl" id="zieljahr"><span></span></div>
+        <div class="small">1. Quelle öffnen (neuer Tab) · 2. dort <b>Strg+A</b>, <b>Strg+C</b> · 3. hier einfügen · 4. „Werte ermitteln“. Sie können auch mehrere Seiten nacheinander einfügen.</div>
+        <div class="quellen" id="quellenListe"></div>
+        <textarea id="seitenText" placeholder="Seitentext hier einfügen (Strg+V) …" aria-label="Eingefügter Seitentext"></textarea>
+        <div class="btns">
+          <button class="btn primary" type="button" id="textAuswerten" data-tip="Sucht die Werte im eingefügten Text und zeigt sie mit Fundstelle. Übernommen wird nur, was Sie bestätigen.">Werte ermitteln</button>
+          <button class="btn" type="button" id="textLeeren">Text leeren</button>
+        </div>
+        <h3 style="margin-top:6px">Weitere Möglichkeiten</h3>
+        <div class="btns">
+          <label class="btn" style="display:inline-block" data-tip="Parameterdatei (.json) laden – z. B. aus der EXE exportiert.">Parameterdatei importieren…<input type="file" id="importDatei" accept=".json,application/json" hidden></label>
+          <button class="btn" type="button" id="exportDatei" data-tip="Speichert die aktuellen Werte als Parameterdatei – auch in der EXE importierbar.">Werte exportieren</button>
+          <button class="btn" type="button" id="vglStandard" data-tip="Vergleicht mit den eingebauten Werten 2026 und übernimmt die gewählten.">Eingebaute Werte 2026</button>
+        </div>
+        <div class="small muted">Websuche nach Thema: <span id="themenSuche"></span></div>
+      </div>
+    </div>
+
+    <div class="card stack" style="margin-top:16px">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <h2 style="flex:1 1 200px">Historie der Rechenwerte</h2>
+        <input type="text" id="sicherKommentar" placeholder="Kommentar (optional)" style="width:220px" aria-label="Kommentar zur Sicherung">
+        <button class="btn" type="button" id="standSichern" data-tip="Legt die jetzigen Werte mit Kommentar in der Historie ab, ohne etwas zu ändern.">Aktuellen Stand sichern</button>
+      </div>
+      <div class="small muted">Bei jeder Änderung der Werte (manuell, aus Seitentext, Parameterdatei, Zurücksetzen, Wiederherstellen) wird der bisherige Stand hier gesichert. Ein Eintrag enthält die Werte VOR der genannten Änderung.</div>
+      <div class="tabwrap"><table class="vgl" id="historie"></table></div>
+    </div>
+  </section>
+
+  <!-- ============================ HILFE ============================ -->
+  <section id="tab-hilfe" hidden>
+    <div class="hilfe">
+      <nav id="hilfeNav" aria-label="Inhalt der Hilfe"></nav>
+      <article id="hilfeText"></article>
+    </div>
+  </section>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="fenster" role="dialog" aria-modal="true" aria-labelledby="modalTitel">
+    <div class="kopf"><h2 id="modalTitel"></h2><div class="small muted" id="modalInfo" style="margin-top:4px"></div></div>
+    <div class="inhalt" id="modalInhalt"></div>
+    <div class="fuss" id="modalFuss"></div>
+  </div>
+</div>
+<div id="tip" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   RECHENKERN (identisch mit berechnung.py der EXE)
+   ===================================================================== */
+const PARAMETER_DEF = [
+  ["est_g0","Einkommensteuer-Tarif","Grundfreibetrag",12348,"€"],
+  ["est_g1","Einkommensteuer-Tarif","Ende Progressionszone 1",17799,"€"],
+  ["est_g2","Einkommensteuer-Tarif","Ende Progressionszone 2 (danach 42 %)",69878,"€"],
+  ["est_g3","Einkommensteuer-Tarif","Ende 42-%-Zone (danach 45 %)",277825,"€"],
+  ["est_a","Einkommensteuer-Tarif","Formel Zone 1: Faktor vor y",914.51,""],
+  ["est_c1","Einkommensteuer-Tarif","Formel Zone 1: Konstante (Eingangssatz)",1400,""],
+  ["est_b","Einkommensteuer-Tarif","Formel Zone 2: Faktor vor z",173.10,""],
+  ["est_c2","Einkommensteuer-Tarif","Formel Zone 2: Konstante",2397,""],
+  ["est_t1","Einkommensteuer-Tarif","Formel Zone 2: Steuer am Zonenbeginn",1034.87,"€"],
+  ["est_k4","Einkommensteuer-Tarif","Formel 42-%-Zone: Abzugsbetrag",11135.63,"€"],
+  ["est_k5","Einkommensteuer-Tarif","Formel 45-%-Zone: Abzugsbetrag",19470.38,"€"],
+  ["est_s4","Einkommensteuer-Tarif","Spitzensteuersatz",42,"%"],
+  ["est_s5","Einkommensteuer-Tarif","Reichensteuersatz",45,"%"],
+  ["soli_satz","Solidaritätszuschlag","Soli-Satz",5.5,"%"],
+  ["soli_freigrenze","Solidaritätszuschlag","Freigrenze (Einzelveranlagung, ESt)",20350,"€"],
+  ["soli_milderung","Solidaritätszuschlag","Milderungszone: max. % des Unterschieds",11.9,"%"],
+  ["wk_rente","Pauschalen & Freibeträge","Werbungskostenpauschale Renten",102,"€"],
+  ["sa_pausch","Pauschalen & Freibeträge","Sonderausgaben-Pauschbetrag",36,"€"],
+  ["uebungsleiter_max","Pauschalen & Freibeträge","Übungsleiterfreibetrag (§ 3 Nr. 26)",3300,"€/Jahr"],
+  ["ehrenamt_max","Pauschalen & Freibeträge","Ehrenamtspauschale (§ 3 Nr. 26a)",960,"€/Jahr"],
+  ["ba_neben_satz","Pauschalen & Freibeträge","BA-Pauschale nebenberuflich (Lehre, Schreiben …)",25,"%"],
+  ["ba_neben_max","Pauschalen & Freibeträge","BA-Pauschale nebenberuflich: Höchstbetrag",900,"€"],
+  ["ba_haupt_satz","Pauschalen & Freibeträge","BA-Pauschale hauptberufl. Schriftsteller/Journalist",30,"%"],
+  ["ba_haupt_max","Pauschalen & Freibeträge","BA-Pauschale hauptberuflich: Höchstbetrag",3600,"€"],
+  ["kv_satz","Kranken- & Pflegeversicherung","KV allgemeiner Beitragssatz",14.6,"%"],
+  ["kv_satz_erm","Kranken- & Pflegeversicherung","KV ermäßigter Beitragssatz (freiwillig)",14.0,"%"],
+  ["kv_zusatz","Kranken- & Pflegeversicherung","KV Zusatzbeitrag (Ihre Kasse)",2.9,"%"],
+  ["pv_satz","Kranken- & Pflegeversicherung","Pflegeversicherung Beitragssatz",3.6,"%"],
+  ["pv_kinderlos","Kranken- & Pflegeversicherung","PV-Zuschlag Kinderlose",0.6,"%"],
+  ["kv_bbg","Kranken- & Pflegeversicherung","Beitragsbemessungsgrenze KV/PV",69750,"€/Jahr"],
+  ["bezugsgroesse","Kranken- & Pflegeversicherung","Bezugsgröße (jährlich)",47460,"€/Jahr"],
+  ["rv_satz","Rentenversicherung","RV-Beitragssatz",18.6,"%"],
+  ["rv_bbg","Rentenversicherung","Beitragsbemessungsgrenze RV",101400,"€/Jahr"],
+  ["gfg_monat","Rentenversicherung","Geringfügigkeitsgrenze",603,"€/Monat"],
+  ["gew_freibetrag","Gewerbesteuer","Freibetrag Gewerbeertrag (Einzelunternehmen)",24500,"€"],
+  ["gew_messzahl","Gewerbesteuer","Steuermesszahl",3.5,"%"],
+  ["gew_anrechnung","Gewerbesteuer","Anrechnung auf ESt: Faktor × Messbetrag",4.0,"×"],
+  ["em_voll_grenze","Erwerbsminderungsrente","Hinzuverdienstgrenze volle EM-Rente",20763.75,"€/Jahr"],
+  ["em_teil_min","Erwerbsminderungsrente","Hinzuverdienstgrenze teilweise EM (mindestens)",41527.50,"€/Jahr"],
+  ["em_anrechnung","Erwerbsminderungsrente","Anrechnung des übersteigenden Betrags",40,"%"],
+  ["witwe_freibetrag","Witwen-/Witwerrente","Freibetrag (26,4 × aktueller Rentenwert)",1122.53,"€/Monat"],
+  ["witwe_anrechnung","Witwen-/Witwerrente","Anrechnung des übersteigenden Einkommens",40,"%"],
+  ["witwe_abzug_selbst","Witwen-/Witwerrente","Pauschaler Abzug Arbeitseinkommen (§ 18b SGB IV)",39.8,"%"],
+  ["ku_vorjahr","Umsatzsteuer","Kleinunternehmer: Umsatzgrenze Vorjahr",25000,"€"],
+  ["ku_laufend","Umsatzsteuer","Kleinunternehmer: Umsatzgrenze laufendes Jahr",100000,"€"],
+  ["tab_von","Tabelle","Tabelle: Start (Std/Woche)",1,"h"],
+  ["tab_bis","Tabelle","Tabelle: Ende (Std/Woche)",30,"h"],
+  ["tab_schritt","Tabelle","Tabelle: Schrittweite (Std/Woche)",1,"h"],
+  ["tab_umsatz_von","Tabelle","Tabelle: Start (Umsatz)",2000,"€"],
+  ["tab_umsatz_bis","Tabelle","Tabelle: Ende (Umsatz)",60000,"€"],
+  ["tab_umsatz_schritt","Tabelle","Tabelle: Schrittweite (Umsatz)",2000,"€"],
+];
+const PARAMETER_STANDARD = Object.fromEntries(PARAMETER_DEF.map(d => [d[0], d[3]]));
+const DEF = Object.fromEntries(PARAMETER_DEF.map(d => [d[0], {gruppe: d[1], label: d[2], std: d[3], einheit: d[4]}]));
+const TARIF_ECKWERTE = ["est_g0", "est_g1", "est_g2", "est_g3"];
+const STEUERJAHR = 2026;
+const RENTENARTEN = {regelalter: "Regelaltersrente", langjaehrig: "Altersrente für langjährig Versicherte (vorgezogen)",
+  besonders: "Altersrente für besonders langjährig Versicherte (45 Jahre)", schwerbehindert: "Altersrente für schwerbehinderte Menschen",
+  em_voll: "Rente wegen voller Erwerbsminderung", em_teil: "Rente wegen teilweiser Erwerbsminderung",
+  witwe: "Witwen-/Witwerrente (große, neues Recht)"};
+const ALTERSRENTEN = ["regelalter", "langjaehrig", "besonders", "schwerbehindert"];
+const KV_ARTEN = {kvdr: "Gesetzlich – pflichtversichert als Rentner (KVdR)", freiwillig: "Gesetzlich – freiwillig versichert", privat: "Privat versichert"};
+const BA_MODI = {betrag_jahr: "Tatsächliche Ausgaben € / Jahr", betrag_monat: "Tatsächliche Ausgaben € / Monat", prozent: "Prozent vom Umsatz",
+  pausch_neben: "Pauschale nebenberuflich (25 %, max. 900 €)", pausch_haupt: "Pauschale Schriftsteller/Journalist (30 %, max. 3.600 €)"};
+const EINGABEN_STANDARD = {
+  rentenart: "regelalter", rente_modus: "brutto_monat", rente_betrag: 1500, rentenbeginn: 2024, rentenfreibetrag: 0,
+  geburtsjahr: 1958, em_grenze_indiv: 0, witwe_sonstiges: 0, zuv_modus: "stunden", stundensatz: 50, std_woche: 5, wochen: 46,
+  umsatz_jahr: 12000, umsatz_monat: 1000, gewinn_jahr: 10000, steuerfrei_pausch: 0, ba_modus: "betrag_jahr", ba_betrag: 1000,
+  ba_prozent: 10, gewerbe: false, hebesatz: 400, kv_art: "kvdr", pkv_beitrag: 0, kinderlos: false, rv_pflicht: false,
+  kirchensteuer: "0", zusammen: false, partner_zve: 0,
+};
+
+/* ---------- Einkommensteuer ---------- */
+function tarif(zve, p) {
+  const x = Math.floor(Math.max(0, zve));
+  if (x <= p.est_g0) return 0;
+  let st;
+  if (x <= p.est_g1) { const y = (x - p.est_g0) / 10000; st = (p.est_a * y + p.est_c1) * y; }
+  else if (x <= p.est_g2) { const z = (x - p.est_g1) / 10000; st = (p.est_b * z + p.est_c2) * z + p.est_t1; }
+  else if (x <= p.est_g3) st = p.est_s4 / 100 * x - p.est_k4;
+  else st = p.est_s5 / 100 * x - p.est_k5;
+  return Math.floor(st);
+}
+const tarifVeranlagung = (zve, e, p) => e.zusammen ? 2 * tarif((zve + Math.max(0, e.partner_zve || 0)) / 2, p) : tarif(zve, p);
+const grenzsteuersatz = (zve, e, p) => tarifVeranlagung(zve + 100, e, p) - tarifVeranlagung(zve, e, p);
+const r2 = x => Math.round(x * 100) / 100;
+function koeffizientenAbleiten(p) {
+  const q = {...p}, g0 = p.est_g0, g1 = p.est_g1, g2 = p.est_g2, y1 = (g1 - g0) / 10000, m1 = p.est_c2 / 10000;
+  q.est_a = r2((m1 * 10000 - p.est_c1) / (2 * y1));
+  q.est_c2 = Math.round(m1 * 10000);
+  const z2 = (g2 - g1) / 10000;
+  q.est_b = r2((p.est_s4 * 100 - q.est_c2) / (2 * z2));
+  q.est_t1 = r2((q.est_a * y1 + p.est_c1) * y1);
+  const stG2 = (q.est_b * z2 + q.est_c2) * z2 + q.est_t1;
+  q.est_k4 = r2(p.est_s4 / 100 * g2 - stG2);
+  const stG3 = p.est_s4 / 100 * p.est_g3 - q.est_k4;
+  q.est_k5 = r2(p.est_s5 / 100 * p.est_g3 - stG3);
+  return q;
+}
+function soli(est, e, p) {
+  const fg = p.soli_freigrenze * (e.zusammen ? 2 : 1);
+  if (est <= fg) return 0;
+  return Math.min(est * p.soli_satz / 100, (est - fg) * p.soli_milderung / 100);
+}
+function besteuerungsanteil(beginn) {
+  const j = Math.trunc(+beginn);
+  if (j <= 2005) return 50;
+  if (j <= 2020) return 50 + 2 * (j - 2005);
+  if (j === 2021) return 81;
+  if (j === 2022) return 82;
+  return Math.min(100, 82.5 + 0.5 * (j - 2023));
+}
+function altersentlastung(eink, e, steuerjahr = STEUERJAHR) {
+  const gj = Math.trunc(+e.geburtsjahr || 0);
+  if (!gj || gj + 64 >= steuerjahr || eink <= 0) return 0;
+  const jahr = Math.max(2005, gj + 65);
+  let satz, hoechst;
+  if (jahr <= 2020) { satz = 40 - 1.6 * (jahr - 2005); hoechst = 1900 - 76 * (jahr - 2005); }
+  else if (jahr <= 2022) [satz, hoechst] = {2021: [15.2, 722], 2022: [14.4, 684]}[jahr];
+  else { satz = Math.max(0, 14.4 - 0.4 * (jahr - 2022)); hoechst = Math.max(0, 684 - 19 * (jahr - 2022)); }
+  return Math.min(eink * satz / 100, hoechst);
+}
+
+/* ---------- Kranken-, Pflege-, Rentenversicherung ---------- */
+const pvSatz = (e, p) => p.pv_satz + (e.kinderlos ? p.pv_kinderlos : 0);
+function kvpvRente(renteJahr, e, p) {
+  const art = e.kv_art || "kvdr", r = Math.min(Math.max(0, renteJahr), p.kv_bbg);
+  if (art === "privat") {
+    const beitrag = Math.max(0, e.pkv_beitrag || 0) * 12, zuschuss = Math.min(r * (p.kv_satz + p.kv_zusatz) / 200, beitrag / 2);
+    return {kv: beitrag - zuschuss, pv: 0, zuschuss};
+  }
+  const kv = art === "freiwillig" ? r * (p.kv_satz_erm + p.kv_zusatz) / 100 - r * (p.kv_satz + p.kv_zusatz) / 200 : r * (p.kv_satz + p.kv_zusatz) / 200;
+  return {kv, pv: r * pvSatz(e, p) / 100, zuschuss: 0};
+}
+const kvFreigrenzeJahr = p => p.bezugsgroesse / 20;
+function svZuverdienst(ae, renteJahr, e, p) {
+  const a = Math.max(0, ae), art = e.kv_art || "kvdr";
+  const r = {kv: 0, pv: 0, rv: 0, kv_pflicht: false, rv_pflicht: false, basis_kv: 0};
+  if (art === "kvdr") {
+    if (a > kvFreigrenzeJahr(p)) {
+      const basis = Math.max(0, Math.min(a, p.kv_bbg - Math.min(renteJahr, p.kv_bbg)));
+      Object.assign(r, {kv_pflicht: true, basis_kv: basis, kv: basis * (p.kv_satz + p.kv_zusatz) / 100, pv: basis * pvSatz(e, p) / 100});
+    }
+  } else if (art === "freiwillig") {
+    const mindest = p.bezugsgroesse / 3;
+    const beitrag = eink => { const b = Math.min(Math.max(eink, mindest), p.kv_bbg); return [b * (p.kv_satz_erm + p.kv_zusatz) / 100, b * pvSatz(e, p) / 100]; };
+    const [kv1, pv1] = beitrag(renteJahr + a), [kv0, pv0] = beitrag(renteJahr);
+    Object.assign(r, {kv_pflicht: a > 0, basis_kv: a, kv: kv1 - kv0, pv: pv1 - pv0});
+  }
+  if (e.rv_pflicht && e.rentenart !== "regelalter" && a / 12 > p.gfg_monat) { r.rv_pflicht = true; r.rv = Math.min(a, p.rv_bbg) * p.rv_satz / 100; }
+  r.summe = r.kv + r.pv + r.rv;
+  return r;
+}
+function gewerbesteuer(gewinn, e, p) {
+  if (!e.gewerbe || gewinn <= 0) return {ertrag: 0, mess: 0, gewst: 0};
+  const ertrag = Math.max(0, Math.floor(gewinn / 100) * 100 - p.gew_freibetrag), mess = ertrag * p.gew_messzahl / 100;
+  return {ertrag, mess, gewst: mess * Math.max(0, e.hebesatz ?? 400) / 100};
+}
+
+/* ---------- Rente ---------- */
+function renteBruttoJahr(e, p) {
+  const m = e.rente_modus, b = Math.max(0, e.rente_betrag);
+  if (m === "brutto_jahr") return b;
+  if (m === "netto_monat") {
+    let lo = b * 12, hi = b * 12 * 1.6 + 1000;
+    for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2, k = kvpvRente(mid, e, p); if (mid - k.kv - k.pv < b * 12) lo = mid; else hi = mid; }
+    return r2((lo + hi) / 2);
+  }
+  return b * 12;
+}
+const rentenfreibetrag = (rj, e) => (e.rentenfreibetrag || 0) > 0 ? e.rentenfreibetrag : rj * (100 - besteuerungsanteil(e.rentenbeginn ?? STEUERJAHR)) / 100;
+function rentenkuerzung(ae, renteJahr, e, p) {
+  const art = e.rentenart || "regelalter", a = Math.max(0, ae);
+  const w = {art, grenze: null, anrechnung_monat: 0, kuerzung: 0, einkommen_monat: 0};
+  if (art === "em_voll" || art === "em_teil") {
+    const grenze = art === "em_voll" ? p.em_voll_grenze : Math.max(p.em_teil_min, e.em_grenze_indiv || 0);
+    w.grenze = grenze;
+    if (a > grenze) w.anrechnung_monat = (a - grenze) / 12 * p.em_anrechnung / 100;
+  } else if (art === "witwe") {
+    const eink = a * (1 - p.witwe_abzug_selbst / 100) / 12 + Math.max(0, e.witwe_sonstiges || 0);
+    w.einkommen_monat = eink; w.grenze = p.witwe_freibetrag;
+    if (eink > p.witwe_freibetrag) w.anrechnung_monat = (eink - p.witwe_freibetrag) * p.witwe_anrechnung / 100;
+  }
+  w.kuerzung = Math.min(w.anrechnung_monat * 12, renteJahr);
+  return w;
+}
+
+/* ---------- Zuverdienst ---------- */
+function umsatzAusEingaben(e) {
+  if (e.zuv_modus === "stunden") return Math.max(0, e.stundensatz * e.std_woche * e.wochen);
+  if (e.zuv_modus === "umsatz_monat") return Math.max(0, e.umsatz_monat * 12);
+  if (e.zuv_modus === "gewinn_jahr") return Math.max(0, e.gewinn_jahr);
+  return Math.max(0, e.umsatz_jahr);
+}
+function betriebsausgaben(u, e, p) {
+  if (e.zuv_modus === "gewinn_jahr") return 0;
+  switch (e.ba_modus) {
+    case "betrag_jahr": return e.ba_betrag;
+    case "betrag_monat": return e.ba_betrag * 12;
+    case "prozent": return u * e.ba_prozent / 100;
+    case "pausch_neben": return Math.min(u * p.ba_neben_satz / 100, p.ba_neben_max);
+    case "pausch_haupt": return Math.min(u * p.ba_haupt_satz / 100, p.ba_haupt_max);
+  }
+  return 0;
+}
+const steuerfrei = (e, p) => Math.min(Math.max(0, e.steuerfrei_pausch || 0), p.uebungsleiter_max);
+function steuern(rj, gewinnStpfl, vorsorge, mess, gewst, e, p) {
+  const rfb = rj > 0 ? rentenfreibetrag(rj, e) : 0;
+  const rentenEink = Math.max(0, rj - rfb - Math.min(p.wk_rente, Math.max(0, rj - rfb)));
+  const aeb = altersentlastung(Math.max(0, gewinnStpfl), e);
+  const sde = rentenEink + gewinnStpfl - aeb, zve = Math.max(0, sde - p.sa_pausch - vorsorge);
+  const estTarif = tarifVeranlagung(zve, e, p);
+  const anr = mess ? Math.min(p.gew_anrechnung * mess, gewst, estTarif) : 0;
+  const est = estTarif - anr, so = soli(est, e, p), kist = estTarif * Number(e.kirchensteuer || "0") / 100;
+  return {rentenfreibetrag: rfb, renten_eink: rentenEink, aeb, zve, est_tarif: estTarif, gew_anrechnung: anr, est, soli: so, kist, summe: est + so + kist};
+}
+function berechneMitUmsatz(u, e, p, renteVoll) {
+  if (renteVoll === undefined || renteVoll === null) renteVoll = renteBruttoJahr(e, p);
+  const ba = betriebsausgaben(u, e, p), gewinn = u - ba;
+  const frei = Math.min(steuerfrei(e, p), Math.max(0, gewinn)), gs = gewinn - frei;
+  const w = rentenkuerzung(gs, renteVoll, e, p), rente = renteVoll - w.kuerzung;
+  const kvrVoll = kvpvRente(renteVoll, e, p), kvr = kvpvRente(rente, e, p);
+  const sv = svZuverdienst(gs, rente, e, p), gw = gewerbesteuer(gs, e, p);
+  const st = steuern(rente, gs, kvr.kv + kvr.pv + sv.summe, gw.mess, gw.gewst, e, p);
+  const st0 = steuern(renteVoll, 0, kvrVoll.kv + kvrVoll.pv, 0, 0, e, p);
+  const rnv = renteVoll - kvrVoll.kv - kvrVoll.pv, rn = rente - kvr.kv - kvr.pv;
+  const nettoOhne = rnv - st0.summe, nettoGesamt = rn + gewinn - sv.summe - gw.gewst - st.summe, nettoZuv = nettoGesamt - nettoOhne;
+  return {umsatz: u, ba, gewinn, steuerfrei: frei, gewinn_stpfl: gs, sv, gew: gw, steuer: st, steuer_ohne: st0,
+    mehrsteuer: st.summe - st0.summe, rente_voll: renteVoll, rente, wirkung: w, kvpv_rente: kvr, kvpv_rente_voll: kvrVoll,
+    rente_netto: rn, rente_netto_voll: rnv, rentenverlust_netto: rnv - rn, netto_ohne: nettoOhne, netto_gesamt: nettoGesamt,
+    netto_gesamt_monat: nettoGesamt / 12, netto_zuv: nettoZuv, netto_zuv_monat: nettoZuv / 12,
+    anteil_umsatz: u > 0 ? nettoZuv / u * 100 : 0, anteil_gewinn: gewinn > 0 ? nettoZuv / gewinn * 100 : 0,
+    grenzsteuersatz: grenzsteuersatz(st.zve, e, p)};
+}
+const umsatzMinusBA = (u, e, p) => u - betriebsausgaben(u, e, p);
+function umsatzFuerGewinn(ziel, e, p) {
+  let lo = 0, hi = 1;
+  while (umsatzMinusBA(hi, e, p) <= ziel) { hi *= 2; if (hi > 1e9) return null; }
+  for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2; if (umsatzMinusBA(mid, e, p) <= ziel) lo = mid; else hi = mid; }
+  return hi;
+}
+function grenzenSprung(e, p) {
+  const frei = steuerfrei(e, p), k = [];
+  if ((e.kv_art || "kvdr") === "kvdr") k.push(["kv", kvFreigrenzeJahr(p) + frei]);
+  if (e.rv_pflicht && e.rentenart !== "regelalter") k.push(["rv", p.gfg_monat * 12 + frei]);
+  return k;
+}
+function bereichAb(grenze, e, p, rv) {
+  const uG = umsatzFuerGewinn(grenze, e, p);
+  if (uG === null) return null;
+  const nettoUnter = berechneMitUmsatz(Math.max(0, uG - 0.01), e, p, rv).netto_zuv;
+  let lo = uG, hi = uG + 1;
+  while (berechneMitUmsatz(hi, e, p, rv).netto_zuv < nettoUnter) { hi = lo + (hi - lo) * 2; if (hi > 1e8) return null; }
+  for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2; if (berechneMitUmsatz(mid, e, p, rv).netto_zuv < nettoUnter) lo = mid; else hi = mid; }
+  if (hi - uG < 0.5) return null;
+  return {umsatz_grenze: uG, umsatz_ende: hi, gewinn_grenze: grenze, gewinn_ende: umsatzMinusBA(hi, e, p), netto_unter: nettoUnter};
+}
+function unguenstigerBereich(e, p, rv) {
+  if (rv === undefined || rv === null) rv = renteBruttoJahr(e, p);
+  const bereiche = [];
+  for (const [grund, g] of grenzenSprung(e, p)) { const b = bereichAb(g, e, p, rv); if (b) { b.grund = grund; bereiche.push(b); } }
+  if (!bereiche.length) return null;
+  return bereiche.reduce((a, b) => b.umsatz_ende > a.umsatz_ende ? b : a);
+}
+function stundenFuerUmsatz(u, e) { const f = e.stundensatz * e.wochen; return f > 0 ? u / f : null; }
+function berechne(e, p) {
+  const rv = renteBruttoJahr(e, p), u = umsatzAusEingaben(e);
+  const r = berechneMitUmsatz(u, e, p, rv);
+  r.stunden_jahr = e.zuv_modus === "stunden" ? e.std_woche * e.wochen : null;
+  r.netto_pro_stunde = r.stunden_jahr ? r.netto_zuv / r.stunden_jahr : null;
+  r.grenz_netto_100 = berechneMitUmsatz(u + 100, e, p, rv).netto_zuv - r.netto_zuv;
+  r.unguenstig = unguenstigerBereich(e, p, rv);
+  r.warnungen = warnungen(r, e, p);
+  return r;
+}
+function warnungen(r, e, p) {
+  const w = [], art = e.rentenart || "regelalter", wk = r.wirkung, a = r.gewinn_stpfl, ub = r.unguenstig;
+  if (ub && r.umsatz >= ub.umsatz_grenze && r.umsatz < ub.umsatz_ende) {
+    const warum = {kv: `Ab dort sind Kranken- und Pflegeversicherungsbeiträge auf das GANZE Arbeitseinkommen fällig (Freigrenze ${fmt(kvFreigrenzeJahr(p) / 12)}/Monat)`,
+      rv: "Ab dort ist Rentenversicherung auf das ganze Arbeitseinkommen fällig"}[ub.grund];
+    let t = `UNGÜNSTIGER BEREICH: Der Gewinn liegt knapp über ${fmt(ub.gewinn_grenze)}. ${warum}. Netto bleibt weniger als knapp darunter (${fmt(ub.netto_unter)}). Erst ab einem Umsatz von ${fmt(ub.umsatz_ende)} lohnt sich der Mehrverdienst.`;
+    if (e.zuv_modus === "stunden") { const h1 = stundenFuerUmsatz(ub.umsatz_grenze, e), h2 = stundenFuerUmsatz(ub.umsatz_ende, e); if (h1 !== null) t += ` Entspricht ca. ${zk(h1, 1)} bis ${zk(h2, 1)} Std/Woche.`; }
+    w.push(["rot", t]);
+  } else if (ub && r.umsatz < ub.umsatz_grenze && r.gewinn > ub.gewinn_grenze * 0.8) {
+    w.push(["orange", `Hinweis: Der Gewinn (${fmt(r.gewinn)}) liegt knapp unter ${fmt(ub.gewinn_grenze)}. Darüber fallen Beiträge auf den ganzen Gewinn an – sinnvoll erst ab Umsatz ${fmt(ub.umsatz_ende)}.`]);
+  }
+  if (ALTERSRENTEN.includes(art)) {
+    w.push(["info", "Altersrente: Seit 2023 dürfen Sie unbegrenzt hinzuverdienen – die Rente wird nicht gekürzt."]);
+    w.push(["info", "Aktivrente (seit 2026, bis 2.000 €/Monat steuerfrei) gilt NUR für Arbeitnehmer nach der Regelaltersgrenze – nicht für Selbständige und Freiberufler. Hier nicht anwendbar."]);
+  }
+  if (art === "em_voll" || art === "em_teil") {
+    if (wk.anrechnung_monat) w.push(["orange", `RENTENKÜRZUNG: Hinzuverdienst ${fmt(a)} über der Grenze von ${fmt(wk.grenze)} – ${zk(p.em_anrechnung, 0)} % des übersteigenden Betrags werden angerechnet: −${fmt(wk.anrechnung_monat)}/Monat, −${fmt(r.rentenverlust_netto)} netto im Jahr.`]);
+    else if (a > wk.grenze * 0.85) w.push(["orange", `Achtung: Hinzuverdienst (${fmt(a)}) nahe der Grenze von ${fmt(wk.grenze)} pro Jahr. Darüber werden 40 % des übersteigenden Betrags auf die Rente angerechnet.`]);
+    const stundenMax = art === "em_voll" ? 15 : 30;
+    if (e.zuv_modus === "stunden" && e.std_woche > stundenMax)
+      w.push(["rot", `ACHTUNG Leistungsvermögen: Eine Rente wegen ${art === "em_voll" ? "voller" : "teilweiser"} Erwerbsminderung setzt voraus, dass Sie weniger als ${art === "em_voll" ? 3 : 6} Stunden täglich arbeiten können. ${zk(e.std_woche, 1)} Std/Woche können die Rente selbst infrage stellen – vorher mit der Rentenversicherung klären!`]);
+    if (art === "em_teil" && !e.em_grenze_indiv) w.push(["info", "Teilweise Erwerbsminderung: Gerechnet mit der Mindestgrenze. Ihre individuelle Grenze (bestes Verdienstjahr der letzten 15 Jahre) steht im Rentenbescheid – bitte eintragen."]);
+    w.push(["info", "EM-Rente: Hinzuverdienst ist der Rentenversicherung zu melden; abgerechnet wird jährlich rückwirkend (Überzahlungen werden zurückgefordert)."]);
+  }
+  if (art === "witwe") {
+    if (wk.anrechnung_monat) w.push(["orange", `EINKOMMENSANRECHNUNG: Anrechenbares Einkommen ${fmt(wk.einkommen_monat)}/Monat (Gewinn − ${zk(p.witwe_abzug_selbst, 1)} % pauschal) über dem Freibetrag von ${fmt(p.witwe_freibetrag)}: ${zk(p.witwe_anrechnung, 0)} % werden angerechnet – −${fmt(wk.anrechnung_monat)}/Monat.`]);
+    w.push(["info", "Witwen-/Witwerrente: Angerechnet wird das Einkommen des VORJAHRES, jeweils ab 1. Juli. Die Kürzung wirkt also zeitversetzt. Eigene Renten zählen ebenfalls (Feld „Sonstiges anrechenbares Einkommen“)."]);
+  }
+  const kv = e.kv_art || "kvdr";
+  if (kv === "kvdr" && ((e.zuv_modus === "stunden" && e.std_woche > 20) || a > r.rente_voll))
+    w.push(["orange", "Achtung KVdR: Ist die Selbständigkeit HAUPTberuflich (mehr als ca. 20 Std/Woche oder Gewinn höher als die Rente), entfällt die Krankenversicherung der Rentner. Dann gilt freiwillige Versicherung mit Beiträgen auf alle Einnahmen (Auswahl „freiwillig“)."]);
+  if (kv === "kvdr" && r.sv.kv_pflicht) w.push(["info", "KVdR: Auf das Arbeitseinkommen zahlen Sie KV (allgemeiner Satz + Zusatzbeitrag) und PV allein – ohne Zuschuss der Rentenversicherung."]);
+  if (kv === "privat") w.push(["info", "Private Krankenversicherung: Der Zuverdienst ändert Ihren Beitrag nicht."]);
+  if (r.sv.rv_pflicht) w.push(["info", "Rentenversicherungspflicht als Selbständiger (z. B. Lehrer/Dozent, arbeitnehmerähnlich): Die Beiträge erhöhen später Ihre Rente."]);
+  else if (e.rv_pflicht && art === "regelalter") w.push(["info", "Nach Erreichen der Regelaltersgrenze mit Vollrente sind Sie rentenversicherungsfrei (Verzicht auf Versicherungsfreiheit möglich)."]);
+  if (e.gewerbe && r.gew.gewst) w.push(["info", `Gewerbesteuer ${fmt(r.gew.gewst)}; davon werden ${fmt(r.steuer.gew_anrechnung)} auf die Einkommensteuer angerechnet.`]);
+  else if (e.gewerbe) w.push(["info", `Gewerbe: Bis ${fmt(p.gew_freibetrag, 0)} Gewinn fällt keine Gewerbesteuer an (Freibetrag).`]);
+  if (r.umsatz > p.ku_laufend) w.push(["rot", `Umsatz über ${fmt(p.ku_laufend, 0)}: Kleinunternehmerregelung entfällt sofort – 19 % Umsatzsteuer auf Ihre Rechnungen.`]);
+  else if (r.umsatz > p.ku_vorjahr) w.push(["orange", `Umsatz über ${fmt(p.ku_vorjahr, 0)}: Im FOLGEJAHR sind Sie kein Kleinunternehmer mehr und müssen 19 % Umsatzsteuer aufschlagen. Der Stundensatz hier ist Ihr Honorar ohne USt.`]);
+  if ((e.steuerfrei_pausch || 0) > p.uebungsleiter_max) w.push(["orange", `Steuerfrei sind höchstens ${fmt(p.uebungsleiter_max, 0)} (Übungsleiter) bzw. ${fmt(p.ehrenamt_max, 0)} (Ehrenamt) – der Rest wurde voll angesetzt.`]);
+  if (r.steuer.aeb) w.push(["info", `Altersentlastungsbetrag (§ 24a EStG): ${fmt(r.steuer.aeb)} vom Gewinn steuerfrei.`]);
+  if (r.gewinn > 410) w.push(["info", "Steuererklärung: Mit Gewinn aus Selbständigkeit sind Sie zur Abgabe verpflichtet, sobald das zu versteuernde Einkommen den Grundfreibetrag übersteigt."]);
+  if (r.gewinn < 0) w.push(["orange", "Verlust aus dem Zuverdienst – wird mit der Rente verrechnet."]);
+  return w;
+}
+function tabelle(e, p, werte, modusStunden) {
+  const rv = renteBruttoJahr(e, p), ub = unguenstigerBereich(e, p, rv);
+  const zeilen = werte.map(x => {
+    const u = modusStunden ? e.stundensatz * x * e.wochen : x, r = berechneMitUmsatz(u, e, p, rv);
+    r.x = x;
+    r.status = r.wirkung.anrechnung_monat ? "Rente gekürzt" : (ub && u >= ub.umsatz_grenze && u < ub.umsatz_ende) ? "ungünstig" : r.sv.summe === 0 ? "abgabenfrei" : "OK";
+    return r;
+  });
+  return {zeilen, ub};
+}
+
+/* =====================================================================
+   Formatierung
+   ===================================================================== */
+function zk(x, n = 2) {
+  if (x === null || x === undefined || !isFinite(x)) return "–";
+  const s = Math.abs(x).toFixed(n).split(".");
+  s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return (x < 0 && Number(Math.abs(x).toFixed(n)) !== 0 ? "−" : "") + s.join(",");
+}
+const fmt = (x, n = 2) => zk(x, n) + " €";
+const fmtP = x => zk(x, 1) + " %";
+function zt(x) { if (x === null || x === undefined) return "–"; const s = zk(x, 2); return s.endsWith(",00") ? s.slice(0, -3) : s; }
+function zahl(t) {
+  let s = String(t).trim().replace(/[€%\s]/g, "");
+  if (!s) return 0;
+  if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+  if (!/^-?\d*\.?\d+$/.test(s)) throw new Error("keine Zahl");
+  return parseFloat(s);
+}
+function zahlText(x) { return String(Math.round(x * 100) / 100).replace(".", ","); }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const $ = id => document.getElementById(id);
+const heute = () => new Date().toISOString().slice(0, 10);
+function datumDe(t) { if (!t) return "–"; const m = /^(\d{4})-(\d\d)-(\d\d)/.exec(t); return m ? `${m[3]}.${m[2]}.${m[1]}` : t; }
+function zeitDe(t) { if (!t) return "–"; const d = new Date(t); return isNaN(d) ? t : d.toLocaleString("de-DE", {dateStyle: "short", timeStyle: "short"}); }
+
+/* =====================================================================
+   Gültigkeitsprüfung (wie aktualisierung.py)
+   ===================================================================== */
+const STANDARD_JAHR = 2026, STANDARD_STAND = "2026-10-10";
+const EINST_STANDARD = { param_jahr: STANDARD_JAHR, param_quelle: "Eingebaute Standardwerte 2026", param_stand: STANDARD_STAND,
+  geprueft_am: "", pruef_intervall_tage: 180, erinnern_ab: "" };
+function plausibilitaet(p) {
+  const m = [], g = TARIF_ECKWERTE.map(k => p[k]);
+  if (g.some((a, i) => i < g.length - 1 && a >= g[i + 1])) m.push(["rot", "Die Tarifgrenzen der Einkommensteuer sind nicht aufsteigend."]);
+  for (const k of ["kv_satz","kv_satz_erm","kv_zusatz","pv_satz","pv_kinderlos","rv_satz","soli_satz","est_s4","est_s5","em_anrechnung","witwe_anrechnung","witwe_abzug_selbst"])
+    if (!(p[k] >= 0 && p[k] <= 100)) m.push(["rot", `Prozentwert „${DEF[k].label}“ = ${zt(p[k])} liegt außerhalb von 0–100 %.`]);
+  if (p.kv_zusatz > 6) m.push(["gelb", "Der KV-Zusatzbeitrag ist ungewöhnlich hoch."]);
+  if (Math.abs(tarif(p.est_g1 + 1, p) - tarif(p.est_g1, p)) > 2 || Math.abs(tarif(p.est_g2 + 1, p) - tarif(p.est_g2, p)) > 2)
+    m.push(["gelb", "Die Tarifformel passt nicht zu den Tarifgrenzen (Sprung an einer Zonengrenze). Bei neuen Grenzen bitte auch die Formel-Koeffizienten aktualisieren."]);
+  if (p.em_teil_min <= p.em_voll_grenze) m.push(["gelb", "Die Mindestgrenze bei teilweiser EM ist üblicherweise doppelt so hoch wie die bei voller EM."]);
+  return m;
+}
+function pruefstatus(p, einst) {
+  const m = [], jahr = +einst.param_jahr || STANDARD_JAHR, h = new Date(), hj = h.getFullYear();
+  if (jahr < hj) m.push(["rot", `Die Parameter gelten für ${jahr}, aktuell ist ${hj}. Steuertarif und Sozialversicherungswerte ändern sich jedes Jahr – bitte aktualisieren.`]);
+  else if (jahr > hj) m.push(["gelb", `Die Parameter sind für ${jahr} – also für ein künftiges Jahr eingestellt.`]);
+  else if (h.getMonth() === 11) m.push(["gelb", `Die Werte für ${hj + 1} werden meist im Herbst/Dezember veröffentlicht – zum Jahreswechsel bitte aktualisieren.`]);
+  const daten = [einst.geprueft_am, einst.param_stand].filter(Boolean).sort();
+  const letzte = daten.length ? daten[daten.length - 1] : null, intervall = +einst.pruef_intervall_tage || 0;
+  if (!letzte) m.push(["gelb", "Die Werte wurden noch nie geprüft."]);
+  else {
+    const tage = Math.floor((Date.parse(heute()) - Date.parse(letzte.slice(0, 10))) / 864e5);
+    if (intervall && tage > intervall) m.push(["gelb", `Die letzte Prüfung ist ${tage} Tage her (Prüfintervall ${intervall} Tage). Gesetzliche Werte können sich auch unterjährig ändern.`]);
+  }
+  m.push(...plausibilitaet(p));
+  return [m.some(x => x[0] === "rot") ? "rot" : m.length ? "gelb" : "gruen", m];
+}
+function unterschiede(alt, neu) {
+  return PARAMETER_DEF.filter(d => d[0] in neu && Math.abs(neu[d[0]] - (alt[d[0]] ?? 0)) > 1e-9).map(d => d[0]);
+}
+
+/* =====================================================================
+   Werte aus Seitentext ermitteln (Port von websuche.py)
+   ===================================================================== */
+const WEBQUELLEN = [
+  ["Gesetz: § 32a EStG – Einkommensteuertarif", "https://www.gesetze-im-internet.de/estg/__32a.html", "Tarifformel, Grundfreibetrag, Tarifgrenzen"],
+  ["Gesetz: § 3 SolzG – Solidaritätszuschlag", "https://www.gesetze-im-internet.de/solzg_1995/__3.html", "Soli-Freigrenze"],
+  ["Gesetz: § 3 EStG – Übungsleiter/Ehrenamt", "https://www.gesetze-im-internet.de/estg/__3.html", "Übungsleiterfreibetrag, Ehrenamtspauschale"],
+  ["finanz-tools.de – Steuerformeln {jahr}", "https://www.finanz-tools.de/einkommensteuer/berechnung-formeln/{jahr}", "Tarifformel des Jahres"],
+  ["lohn-info.de – Sozialversicherung {jahr}", "https://lohn-info.de/sozialversicherungsbeitraege{jahr}.html", "KV-/PV-/RV-Sätze, Zusatzbeitrag, Beitragsbemessungsgrenzen, Bezugsgröße, Geringfügigkeitsgrenze"],
+  ["Haufe – Beitragsbemessungsgrenzen", "https://www.haufe.de/sozialwesen/versicherungen-beitraege/beitragsbemessungsgrenze_240_421702.html", "Beitragsbemessungsgrenzen KV/PV und RV"],
+  ["smart-rechner.de – Hinzuverdienst EM-Rente", "https://www.smart-rechner.de/erwerbsminderungsrente/ratgeber/hinzuverdienstgrenze.php", "Hinzuverdienstgrenzen volle/teilweise Erwerbsminderung"],
+  ["steuertipps.de – Witwenrente", "https://www.steuertipps.de/altersvorsorge-rente-finanzen/witwenrente-hoehe-und-anrechnungsfreier-hinzuverdienst", "Freibetrag bei Witwen-/Witwerrenten"],
+];
+const THEMEN_SUCHE = [["Steuertarif","Einkommensteuertarif {jahr} § 32a Formel Grundfreibetrag"],["Sozialversicherung","Sozialversicherung Rechengrößen {jahr} Bezugsgröße Beitragsbemessungsgrenze Zusatzbeitrag"],
+  ["EM-Rente","Erwerbsminderungsrente Hinzuverdienstgrenze {jahr}"],["Witwenrente","Witwenrente Freibetrag {jahr} Einkommensanrechnung"],
+  ["Soli","Solidaritätszuschlag Freigrenze {jahr}"],["Rentenbesteuerung","Besteuerungsanteil Rente {jahr}"],["Kleinunternehmer","Kleinunternehmerregelung Umsatzgrenze {jahr}"]];
+const TARIF = ["est_g0","est_g1","est_g2","est_g3","est_a","est_c1","est_b","est_c2","est_t1","est_k4","est_k5","est_s4","est_s5"];
+const REGELN = {
+  soli_freigrenze: ["Solidaritätszuschlag\\w*|Freigrenze\\w*|in anderen Fällen","betrag",.12,400],
+  uebungsleiter_max: ["Übungsleiter\\w*","betrag",[2500,4500],1500], ehrenamt_max: ["26a\\. Einnahmen|Ehrenamt\\w*","betrag",[700,1300],800],
+  kv_satz: ["allgemeine\\w* Beitragssatz","prozent",[13,16],150], kv_satz_erm: ["ermäßigte\\w* (?:Beitrags)?[Ss]atz","prozent",[12,15.5],150],
+  kv_zusatz: ["(?:durchschnittliche\\w* )?Zusatzbeitrag\\w*","prozent",[1,5],200], pv_satz: ["Pflegeversicherung","prozent",[2.5,5],200],
+  pv_kinderlos: ["Kinderlose\\w*","prozent",[0.45,1.5],250], rv_satz: ["Rentenversicherung","prozent",[15,22],200],
+  kv_bbg: ["Beitragsbemessungsgrenze\\w*|BBG","betrag",.08,300], rv_bbg: ["Beitragsbemessungsgrenze\\w*|BBG","betrag",.08,300],
+  bezugsgroesse: ["Bezugsgr\\w*","betrag",.10,200], gfg_monat: ["Geringfügigkeitsgrenze|Minijob\\w*","betrag",.12,150],
+  em_voll_grenze: ["volle[rn]? Erwerbsminderung\\w*|3/8","betrag",.10,300], em_teil_min: ["teilweise[rn]? Erwerbsminderung\\w*|6/8","betrag",.10,300],
+  witwe_freibetrag: ["Freibetrag\\w*","betrag",.10,200], ku_vorjahr: ["Kleinunternehmer\\w*","betrag",[20000,35000],300],
+  ku_laufend: ["Kleinunternehmer\\w*","betrag",[80000,130000],300],
+};
+function bisectLeft(a, x) { let lo = 0, hi = a.length; while (lo < hi) { const m = (lo + hi) >> 1; if (a[m] < x) lo = m + 1; else hi = m; } return lo; }
+function textNormalisieren(t) {
+  t = t.replace(/[ \t   ]+/g, " ").replace(/\r/g, "");
+  let alt;
+  do { alt = t; t = t.replace(/(?<![\d.,])(\d{1,3}(?:\.\d{3})*) (\d{3})(?!\d)/g, "$1.$2"); } while (alt !== t);
+  return t;
+}
+class Seite {
+  constructor(name, text, titel = "") {
+    this.name = name;
+    this.text = textNormalisieren(text);
+    this.titelJahre = new Set((titel.match(/(?<!\d)20\d\d(?!\d)/g) || []).map(Number));
+    this.zahlen = [];
+    const re = /(?<![\d.,])(\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?(?!\d)(\s*(?:Mio\.?|Million\w*))?/g;
+    let m;
+    while ((m = re.exec(this.text))) {
+      let w = parseFloat(m[1].replace(/\./g, "") + (m[2] ? "." + m[2] : ""));
+      if (m[3]) w *= 1e6;
+      const prozent = /^\s*(%|Prozent|vom Hundert)/.test(this.text.slice(re.lastIndex, re.lastIndex + 14));
+      this.zahlen.push([m.index, re.lastIndex, w, prozent]);
+    }
+    this.pos = this.zahlen.map(z => z[0]);
+    this.jahre = [];
+    const rj = /(?<!\d)(20\d\d)(?!\d)/g;
+    while ((m = rj.exec(this.text))) this.jahre.push([m.index, +m[1]]);
+    this.jpos = this.jahre.map(j => j[0]);
+  }
+  satzanfang(pos) { return Math.max(this.text.lastIndexOf("\n", pos - 1), this.text.lastIndexOf(". ", pos - 1)) + 1; }
+  jahrScore(pos, ziel) {
+    const anfang = this.satzanfang(pos);
+    let i = bisectLeft(this.jpos, pos) - 1;
+    while (i >= 0 && this.jahre[i][0] >= anfang) {
+      const [jp, j] = this.jahre[i], zw = this.text.slice(jp, pos);
+      if ((zw.match(/\)/g) || []).length > (zw.match(/\(/g) || []).length) { i--; continue; }
+      return j === ziel ? 2 : -2;
+    }
+    if (this.titelJahre.has(ziel)) return this.titelJahre.size === 1 ? 1 : 0;
+    return this.titelJahre.size ? -1 : 0;
+  }
+}
+function passt(w, prozent, typ, grenze, akt) {
+  if (typ === "prozent" && !prozent) return false;
+  if (typ === "betrag" && prozent) return false;
+  const [lo, hi] = Array.isArray(grenze) ? grenze : [akt * (1 - grenze), akt * (1 + grenze)];
+  return w >= lo && w <= hi;
+}
+function kandidaten(seite, p, ziel) {
+  const erg = {};
+  for (const [key, [kw, typ, grenze, fenster]] of Object.entries(REGELN)) {
+    const akt = p[key]; if (akt === undefined) continue;
+    const werte = new Map(), re = new RegExp(kw, "g");
+    let m;
+    while ((m = re.exec(seite.text))) {
+      const ende = re.lastIndex, von = bisectLeft(seite.pos, ende), bis = bisectLeft(seite.pos, ende + fenster);
+      for (const [pos, zende, w, prozent] of seite.zahlen.slice(von, bis)) {
+        if (!passt(w, prozent, typ, grenze, akt)) continue;
+        const score = seite.jahrScore(pos, ziel), k = Math.round(w * 1e4) / 1e4;
+        if (!werte.has(k)) werte.set(k, {jahr: score, stimmen: 0, abstand: pos - ende, kontext: ""});
+        const x = werte.get(k);
+        x.stimmen++;
+        if (score > x.jahr || (score === x.jahr && pos - ende < x.abstand) || !x.kontext) {
+          x.jahr = Math.max(x.jahr, score); x.abstand = Math.min(x.abstand, pos - ende);
+          x.kontext = seite.text.slice(Math.max(m.index, pos - 140), zende + 50).replace(/\s+/g, " ");
+        }
+      }
+      if (m[0].length === 0) re.lastIndex++;
+    }
+    if (werte.size) erg[key] = werte;
+  }
+  return erg;
+}
+/* Einkommensteuer-Formel (§ 32a EStG) als Ganzes erkennen */
+const N = "(\\d{1,3}(?:\\.\\d{3})+|\\d+)(?:,(\\d+))?", MAL = "\\s*(?:•|·|×|\\*|⋅|\\\\cdot)\\s*";
+const zahlAus = (a, b) => parseFloat(a.replace(/\./g, "") + (b ? "." + b : ""));
+function formel(seite, ziel) {
+  let t = seite.text.replace(/\\text\{([^}]*)\}/g, "$1").replace(/\\leq/g, "≤").replace(/\\geq/g, "≥").replace(/\\cdot/g, "·").replace(/[–−]/g, "-");
+  const w = {}; let pos = null, posG0 = null, m;
+  if ((m = new RegExp("\\(\\s*" + N + MAL + "y\\s*\\+\\s*" + N + "\\s*\\)" + MAL + "y").exec(t))) { w.est_a = zahlAus(m[1], m[2]); w.est_c1 = zahlAus(m[3], m[4]); pos = m.index; }
+  if ((m = new RegExp("\\(\\s*" + N + MAL + "z\\s*\\+\\s*" + N + "\\s*\\)" + MAL + "z\\s*\\+\\s*" + N).exec(t))) { w.est_b = zahlAus(m[1], m[2]); w.est_c2 = zahlAus(m[3], m[4]); w.est_t1 = zahlAus(m[5], m[6]); }
+  for (const [kk, ks, satz] of [["est_k4", "est_s4", "0,42"], ["est_k5", "est_s5", "0,45"]])
+    if ((m = new RegExp(satz + MAL + "(?:x|zvE)\\s*-\\s*" + N).exec(t))) { w[kk] = zahlAus(m[1], m[2]); w[ks] = Math.round(parseFloat(satz.replace(",", ".")) * 100); }
+  if ((m = new RegExp("bis\\s+" + N + "\\s*Euro\\s*\\(Grundfreibetrag\\)").exec(t) || new RegExp("y\\s*=\\s*\\(\\s*zvE\\s*-\\s*" + N + "\\s*\\)").exec(t))) { w.est_g0 = zahlAus(m[1], m[2]); posG0 = m.index; }
+  const paare = new Map(), rp = new RegExp("(?:von\\s+)?" + N + "\\s*Euro\\s*(?:bis|≤\\s*zvE\\s*≤)\\s*" + N + "\\s*Euro", "g");
+  while ((m = rp.exec(t))) paare.set(zahlAus(m[1], m[2]), zahlAus(m[3], m[4]));
+  if ("est_g0" in w) { let g = w.est_g0; for (const k of ["est_g1", "est_g2", "est_g3"]) if (paare.has(g + 1)) { g = paare.get(g + 1); w[k] = g; } }
+  if (!["est_g0","est_g1","est_g2","est_a","est_c1","est_b","est_c2","est_t1","est_k4"].every(k => k in w)) return null;
+  const score = Math.max(...[posG0, pos].filter(x => x !== null).map(x => seite.jahrScore(x, ziel)));
+  return {werte: w, score, kontext: pos !== null ? t.slice(pos, pos + 220).replace(/\s+/g, " ") : ""};
+}
+function auswerten(seiten, p, ziel) {
+  const ges = {}, formeln = [];
+  for (const s of seiten) {
+    const f = formel(s, ziel); if (f) formeln.push({...f, name: s.name});
+    for (const [key, werte] of Object.entries(kandidaten(s, p, ziel))) {
+      for (const [w, info] of werte) {
+        ges[key] = ges[key] || new Map();
+        if (!ges[key].has(w)) ges[key].set(w, {jahr: -9, stimmen: 0, abstand: 1e9, quellen: [], kontext: ""});
+        const g = ges[key].get(w);
+        g.stimmen += info.stimmen;
+        if (!g.quellen.includes(s.name)) g.quellen.push(s.name);
+        if (info.jahr > g.jahr || (info.jahr === g.jahr && info.abstand < g.abstand)) { g.jahr = info.jahr; g.abstand = info.abstand; g.kontext = `${s.name}: …${info.kontext}…`; }
+      }
+    }
+  }
+  const erg = {};
+  for (const [key, werte] of Object.entries(ges)) {
+    const [w, g] = [...werte.entries()].sort((a, b) => (b[1].jahr - a[1].jahr) || (b[1].quellen.length - a[1].quellen.length) || (b[1].stimmen - a[1].stimmen) || (a[1].abstand - b[1].abstand))[0];
+    if (g.jahr < 0) continue;
+    erg[key] = {wert: w, quellen: g.quellen, kontext: g.kontext, jahr_ok: g.jahr > 0};
+  }
+  if (formeln.length) {
+    const gleich = (a, b) => ["est_g0", "est_g1", "est_a", "est_b"].every(k => a.werte[k] === b.werte[k]);
+    const best = formeln.slice().sort((a, b) => (b.score - a.score) || (formeln.filter(u => gleich(u, b)).length - formeln.filter(u => gleich(u, a)).length))[0];
+    if (best.score >= 0) {
+      const quellen = formeln.filter(u => gleich(u, best)).map(u => u.name);
+      for (const [k, v] of Object.entries(best.werte)) erg[k] = {wert: v, quellen, kontext: `${quellen[0]}: …${best.kontext}…`, jahr_ok: best.score > 0};
+    }
+  }
+  return erg;
+}
+
+/* =====================================================================
+   Speicherung: claude.ai-Konto (db, privat pro Person) oder Browser
+   ===================================================================== */
+const Store = {
+  modus: "lokal", db: null, uid: null, downloads: null, ketten: {},
+  async init() {
+    try {
+      if (window.claude && typeof window.claude.use === "function") {
+        const [db, user, dl] = await Promise.all([claude.use("db"), claude.use("user"), claude.use("downloads")]);
+        this.downloads = dl;
+        const uid = user ? await user.id() : null;
+        if (db && uid) { this.db = db; this.uid = uid; this.modus = "konto"; }
+      }
+    } catch (e) { /* lokal weiter */ }
+  },
+  ref(key) { return this.db.doc(`data/users/${this.uid}/${key}`); },
+  histCol() { return this.db.doc(`data/users/${this.uid}/historie`).collection("eintraege"); },
+  async get(key) {
+    if (this.modus === "konto") {
+      try { const s = await this.ref(key).get(); return s.exists ? s.data().v : null; } catch (e) { return null; }
+    }
+    try { const t = localStorage.getItem("pzr_de_" + key); return t ? JSON.parse(t) : null; } catch (e) { return null; }
+  },
+  set(key, val) {
+    // je Dokument eine Schreiboperation nach der anderen
+    const vorher = this.ketten[key] || Promise.resolve();
+    const p = vorher.then(async () => {
+      if (this.modus === "konto") await this.ref(key).set({v: val});
+      else localStorage.setItem("pzr_de_" + key, JSON.stringify(val));
+    }).catch(e => { zeigeToast("Speichern nicht möglich: " + (e && (e.message || e.code) || e)); });
+    this.ketten[key] = p;
+    return p;
+  },
+  async historieLaden() {
+    if (this.modus === "konto") {
+      try { const q = await this.histCol().orderBy("zeit", "desc").limit(300).get(); return q.docs.map(d => ({id: d.id, ...d.data()})); }
+      catch (e) { return []; }
+    }
+    return (await this.get("historie")) || [];
+  },
+  async historieNeu(eintrag) {
+    if (this.modus === "konto") { const ref = this.histCol().doc(); await ref.set(eintrag); return {id: ref.id, ...eintrag}; }
+    const e = {id: "h" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), ...eintrag};
+    zustand.historie.unshift(e); zustand.historie = zustand.historie.slice(0, 300);
+    await this.set("historie", zustand.historie);
+    return e;
+  },
+  async historieLoeschen(id) {
+    if (this.modus === "konto") { await this.histCol().doc(id).delete(); return; }
+    await this.set("historie", zustand.historie);
+  },
+};
+
+/* =====================================================================
+   Zustand
+   ===================================================================== */
+const zustand = { p: {...PARAMETER_STANDARD}, einst: {...EINST_STANDARD}, e: {...EINGABEN_STANDARD}, szenarien: {}, historie: [],
+  ergebnis: null, tab: null, spaeterHinweis: false };
+
+async function parameterAendern(neu, anlass, meta = {}) {
+  neu = {...PARAMETER_STANDARD, ...zustand.p, ...neu};
+  const diff = unterschiede(zustand.p, neu);
+  const jahrNeu = "param_jahr" in meta && +meta.param_jahr !== +zustand.einst.param_jahr;
+  if (diff.length || jahrNeu) {
+    const e = await Store.historieNeu(historieEintrag(anlass));
+    if (Store.modus === "konto") { zustand.historie.unshift(e); }
+  }
+  zustand.p = neu;
+  Object.assign(zustand.einst, meta);
+  await Promise.all([Store.set("param", zustand.p), Store.set("einst", zustand.einst)]);
+  paramAnzeigen(); alles();
+  return diff.length > 0 || jahrNeu;
+}
+function historieEintrag(anlass) {
+  return { zeit: new Date().toISOString(), anlass, jahr: zustand.einst.param_jahr, quelle: zustand.einst.param_quelle || "",
+    stand: zustand.einst.param_stand || "", parameter: {...zustand.p} };
+}
+
+/* =====================================================================
+   Oberfläche – Eingaben
+   ===================================================================== */
+const ZAHLFELDER = ["rente_betrag","rentenbeginn","rentenfreibetrag","geburtsjahr","em_grenze_indiv","witwe_sonstiges","hebesatz","pkv_beitrag","partner_zve",
+  "stundensatz","std_woche","wochen","umsatz_jahr","umsatz_monat","gewinn_jahr","steuerfrei_pausch","ba_betrag","ba_prozent"];
+const CHECKS = ["kinderlos","rv_pflicht","zusammen"];
+const SELECTS = ["rentenart","rente_modus","kv_art","kirchensteuer","zuv_modus","ba_modus"];
+function eingabenSetzen(e) {
+  for (const k of ZAHLFELDER) { $(k).value = zahlText(e[k]); $(k).classList.remove("fehler"); }
+  for (const k of CHECKS) $(k).checked = !!e[k];
+  for (const k of SELECTS) $(k).value = e[k];
+  $(e.gewerbe ? "gewerbe1" : "gewerbe0").checked = true;
+}
+function eingabenLesen() {
+  const e = {...EINGABEN_STANDARD}; let fehler = false;
+  for (const k of ZAHLFELDER) {
+    try { e[k] = zahl($(k).value); $(k).classList.remove("fehler"); }
+    catch (x) { e[k] = zustand.e[k]; $(k).classList.add("fehler"); fehler = true; }
+  }
+  for (const k of CHECKS) e[k] = $(k).checked;
+  for (const k of SELECTS) e[k] = $(k).value;
+  e.gewerbe = $("gewerbe1").checked;
+  return [e, fehler];
+}
+function feldAktiv(id, an) { const el = $(id); el.disabled = !an; const row = el.closest(".row"); if (row) row.classList.toggle("dis", !an); }
+function modusAnzeigen(e) {
+  document.querySelectorAll("[data-z]").forEach(el => {
+    const an = el.dataset.z === e.zuv_modus; el.classList.toggle("dis", !an); el.querySelector("input").disabled = !an;
+  });
+  const direkt = e.zuv_modus === "gewinn_jahr";
+  $("ba_modus").disabled = direkt; $("boxBA").classList.toggle("dis", direkt);
+  const bm = e.ba_modus, sicht = {betrag: ["betrag_jahr","betrag_monat"].includes(bm), prozent: bm === "prozent"};
+  document.querySelectorAll("[data-b]").forEach(el => {
+    const an = !direkt && sicht[el.dataset.b]; el.classList.toggle("dis", !an); el.querySelector("input").disabled = !an;
+  });
+  $("u_ba").textContent = bm === "betrag_monat" ? "€/Mon." : "€/Jahr";
+  $("u_rente").textContent = e.rente_modus === "brutto_jahr" ? "€/Jahr" : "€/Mon.";
+  feldAktiv("hebesatz", e.gewerbe);
+  feldAktiv("pkv_beitrag", e.kv_art === "privat");
+  feldAktiv("em_grenze_indiv", e.rentenart === "em_teil");
+  feldAktiv("witwe_sonstiges", e.rentenart === "witwe");
+  feldAktiv("partner_zve", e.zusammen);
+  $("rv_pflicht").disabled = e.rentenart === "regelalter"; $("lbl_rv_pflicht").classList.toggle("dis", e.rentenart === "regelalter");
+}
+let eingabeTimer = null;
+function eingabeGeaendert() {
+  const [e, fehler] = eingabenLesen();
+  modusAnzeigen(e);
+  if (fehler) return;
+  zustand.e = e;
+  rechnen();
+  clearTimeout(eingabeTimer);
+  eingabeTimer = setTimeout(() => Store.set("eingaben", zustand.e), 900);
+}
+
+/* =====================================================================
+   Ergebnis
+   ===================================================================== */
+function rechnen() {
+  let r;
+  try { r = berechne(zustand.e, pCalc()); } catch (x) { zeigeToast("Berechnungsfehler: " + x.message); return; }
+  zustand.ergebnis = r;
+  ergebnisAnzeigen(r, zustand.e, pCalc()); leisteAktualisieren();
+  if (zustand.tab === "tabelle") tabelleAnzeigen();
+}
+function berichtZeilen(r, e, p) {
+  const sv = r.sv, gw = r.gew, st = r.steuer, st0 = r.steuer_ohne, wk = r.wirkung, L = [];
+  const h = t => L.push({h: t});
+  const z = (label, wert, extra = "", tip = "", art = "") => L.push({label, wert, extra, tip, art});
+  h("Zuverdienst");
+  if (r.stunden_jahr) z("Stunden pro Jahr", zk(r.stunden_jahr, 1) + " h", `${zahlText(e.std_woche)} h × ${zahlText(e.wochen)} Wo.`, "Stunden pro Woche × Arbeitswochen pro Jahr.");
+  z("Umsatz (Einnahmen)", fmt(r.umsatz), "", "Honorare im Jahr ohne Umsatzsteuer.");
+  if (e.zuv_modus !== "gewinn_jahr") z("– Betriebsausgaben", fmt(r.ba), BA_MODI[e.ba_modus]);
+  z("= Gewinn", fmt(r.gewinn), "", "Einnahmen minus Betriebsausgaben (Einnahmen-Überschuss-Rechnung).", "fett");
+  if (r.steuerfrei) {
+    z("– davon steuer-/beitragsfrei", fmt(r.steuerfrei), "Übungsleiter/Ehrenamt", "Übungsleiterfreibetrag bis 3.300 € bzw. Ehrenamtspauschale bis 960 € im Jahr.");
+    z("= steuer- und beitragspflichtiger Gewinn", fmt(r.gewinn_stpfl));
+  }
+  h("Kranken-, Pflege-, Rentenversicherung (Zuverdienst)");
+  const kv = e.kv_art || "kvdr";
+  if (kv === "privat") z("Private Krankenversicherung", "kein Mehrbeitrag", "", "Der PKV-Beitrag hängt nicht vom Einkommen ab.");
+  else if (kv === "kvdr" && !sv.kv_pflicht) z("KVdR: Freigrenze", fmt(kvFreigrenzeJahr(p) / 12), "pro Monat – nicht überschritten", "Arbeitseinkommen bis 1/20 der Bezugsgröße im Monat ist in der KVdR beitragsfrei.");
+  else {
+    z(`Krankenversicherung ${zk(kv === "kvdr" ? p.kv_satz : p.kv_satz_erm, 1)} % + ${zk(p.kv_zusatz, 1)} %`, fmt(sv.kv), `Basis ${fmt(sv.basis_kv)}`, "Auf das Arbeitseinkommen tragen Sie den vollen Beitrag allein (kein Zuschuss der DRV).");
+    z(`Pflegeversicherung ${zk(pvSatz(e, p), 1)} %`, fmt(sv.pv));
+  }
+  if (sv.rv_pflicht) z(`Rentenversicherung ${zk(p.rv_satz, 1)} %`, fmt(sv.rv), "", "Pflicht für bestimmte Selbständige (z. B. Lehrer/Dozenten) vor der Regelaltersgrenze.");
+  z("= Beiträge gesamt", fmt(sv.summe), `= ${fmt(sv.summe / 12)} / Monat`, "Als Vorsorgeaufwendungen steuerlich absetzbar.", "fett");
+  if (e.gewerbe) {
+    h("Gewerbesteuer");
+    z("Gewerbeertrag nach Freibetrag", fmt(gw.ertrag), "", `Gewinn abgerundet auf volle 100 € minus Freibetrag ${fmt(p.gew_freibetrag, 0)}.`);
+    z(`Steuermessbetrag ${zk(p.gew_messzahl, 1)} %`, fmt(gw.mess));
+    z(`Gewerbesteuer (Hebesatz ${zahlText(e.hebesatz)} %)`, fmt(gw.gewst), "", "Wird größtenteils auf die Einkommensteuer angerechnet (§ 35 EStG).", "fett");
+  }
+  h("Einkommensteuer");
+  z("Rente brutto (nach Kürzung)", fmt(r.rente));
+  z("– steuerfreier Rententeil", fmt(st.rentenfreibetrag), `Besteuerungsanteil ${zahlText(besteuerungsanteil(e.rentenbeginn))} %`, "Der steuerfreie Teil wird im Jahr nach Rentenbeginn als fester Euro-Betrag festgeschrieben. Tragen Sie den Wert aus dem Steuerbescheid ein, wenn Sie ihn kennen.");
+  z("= Einkünfte aus Renten (nach 102 € WK)", fmt(st.renten_eink));
+  z("+ Gewinn (steuerpflichtig)", fmt(r.gewinn_stpfl));
+  if (st.aeb) z("– Altersentlastungsbetrag (§ 24a)", fmt(st.aeb), "", "Für über 64-Jährige ein Prozentsatz der Einkünfte außer Renten, je nach Geburtsjahr.");
+  z("– Vorsorgeaufwendungen + 36 € Pauschbetrag", fmt(Math.max(0, st.renten_eink + r.gewinn_stpfl - st.aeb - st.zve)), "", "KV-/PV-Beiträge (auf Rente und Zuverdienst), RV-Beiträge und 36 € Sonderausgaben-Pauschbetrag.");
+  z("= zu versteuerndes Einkommen", fmt(st.zve), (e.zusammen ? "Zusammenveranlagung · " : "") + `Grenzsteuersatz ${fmtP(r.grenzsteuersatz)}`, "Grenzsteuersatz = Steuer auf jeden zusätzlichen Euro.", "fett");
+  z("Einkommensteuer (Tarif 2026)", fmt(st.est_tarif));
+  if (st.gew_anrechnung) z("– Anrechnung Gewerbesteuer (§ 35)", fmt(st.gew_anrechnung));
+  z("+ Solidaritätszuschlag", fmt(st.soli), "", "Erst über der Freigrenze, mit Milderungszone.");
+  if (st.kist) z(`+ Kirchensteuer ${e.kirchensteuer} %`, fmt(st.kist));
+  z("= Steuer gesamt MIT Zuverdienst", fmt(st.summe), "", "", "fett");
+  z("Steuer OHNE Zuverdienst (nur Rente)", fmt(st0.summe));
+  z("= Mehrsteuer durch den Zuverdienst", fmt(r.mehrsteuer), "", "Wird mit dem Steuerbescheid festgesetzt; danach verlangt das Finanzamt Vorauszahlungen.", "fett");
+  if (["em_voll", "em_teil", "witwe"].includes(wk.art)) {
+    h("Rentenkürzung durch Hinzuverdienst");
+    if (wk.art === "witwe") {
+      z("Anrechenbares Einkommen (pauschal netto)", fmt(wk.einkommen_monat), "pro Monat", "Gewinn minus 39,8 % (§ 18b SGB IV) plus sonstiges anrechenbares Einkommen.");
+      z("Freibetrag", fmt(p.witwe_freibetrag), "pro Monat");
+    } else {
+      z("Hinzuverdienst (Gewinn)", fmt(r.gewinn_stpfl), "pro Jahr");
+      z("Hinzuverdienstgrenze", fmt(wk.grenze), "pro Jahr");
+    }
+    z("Kürzung der Rente", fmt(wk.anrechnung_monat), "pro Monat", "40 % des übersteigenden Betrags werden angerechnet.", "fett");
+    z("Rentenkürzung pro Jahr (brutto)", fmt(r.rente_voll - r.rente));
+  }
+  const verlust = r.rentenverlust_netto > 0.005;
+  h("Netto Zuverdienst" + (verlust ? " (nach Rentenkürzung)" : ""));
+  z("Gewinn", fmt(r.gewinn));
+  z("– KV/PV/RV-Beiträge", fmt(sv.summe));
+  if (gw.gewst) z("– Gewerbesteuer", fmt(gw.gewst));
+  z("– Mehrsteuer", fmt(r.mehrsteuer));
+  if (verlust) z("– Rentenkürzung netto", fmt(r.rentenverlust_netto), "", "", "fett");
+  z("Netto pro Jahr", fmt(r.netto_zuv), "", "Netto-Effekt: So viel mehr haben Sie im Jahr als ohne Zuverdienst.", "gross");
+  z("Netto pro Monat (÷ 12)", fmt(r.netto_zuv_monat), "", "", "gross");
+  z("Nettoanteil vom Umsatz", fmtP(r.anteil_umsatz), "", "So viel Prozent des Umsatzes bleiben Ihnen tatsächlich.", "fett");
+  if (r.netto_pro_stunde !== null) z("Netto pro Arbeitsstunde", fmt(r.netto_pro_stunde));
+  z("Von +100 € mehr Umsatz bleiben netto", fmt(r.grenz_netto_100), "", "Ihre aktuelle Grenzbelastung.");
+  if (r.unguenstig) z("Ungünstiger Bereich (Umsatz)", `${zk(r.unguenstig.umsatz_grenze, 0)} – ${fmt(r.unguenstig.umsatz_ende, 0)}`, "", "Knapp über einer Freigrenze fallen Beiträge auf den ganzen Gewinn an.");
+  h("Rente");
+  z("Rentenart", RENTENARTEN[wk.art] || "");
+  z("Rente brutto pro Monat", fmt(r.rente_voll / 12));
+  z("– eigener KV-Anteil", fmt(r.kvpv_rente_voll.kv / 12), "pro Monat");
+  z("– Pflegeversicherung", fmt(r.kvpv_rente_voll.pv / 12), "pro Monat");
+  z("= Zahlbetrag pro Monat (ohne Zuverdienst)", fmt(r.rente_netto_voll / 12), "", "Auf die gesetzliche Rente wird keine Steuer einbehalten – sie wird über die Steuererklärung erhoben.", "fett");
+  z("Steuer auf die Rente allein (Jahr)", fmt(st0.summe));
+  h("Gesamt (Rente + Zuverdienst)");
+  z("Gesamt netto pro Jahr", fmt(r.netto_gesamt), "", "Rente nach KV/PV und Steuer plus Netto aus dem Zuverdienst.", "gross");
+  z("Gesamt netto pro Monat (÷ 12)", fmt(r.netto_gesamt_monat), "", "", "gross");
+  z("Zum Vergleich: nur Rente netto / Monat", fmt(r.netto_ohne / 12));
+  return L;
+}
+function ergebnisAnzeigen(r, e, p) {
+  const sv = r.sv;
+  $("ergTitel").textContent = `Ergebnis ${zustand.einst.param_jahr}`;
+  $("ergArt").textContent = (e.gewerbe ? "Gewerbetreibender" : "Freiberufler") + " · " + (KV_ARTEN[e.kv_art] || "").split(" – ").pop().split(" (")[0]
+    + (r.wirkung.anrechnung_monat ? " · RENTE GEKÜRZT" : "");
+  $("pensionInfo").textContent = (e.rente_modus === "netto_monat" ? `→ Brutto rückgerechnet: ${fmt(r.rente_voll / 12)} / Monat`
+    : `→ Zahlbetrag (nach KV/PV): ${fmt(r.rente_netto_voll / 12)} / Monat`) + ` · steuerpflichtig ${zahlText(besteuerungsanteil(e.rentenbeginn))} %`;
+  const ungue = r.warnungen.some(w => w[1].startsWith("UNGÜNSTIG"));
+  const abgaben = sv.summe + r.gew.gewst + r.mehrsteuer;
+  $("tiles").innerHTML = `
+    <div class="tile haupt" data-tip="Was der Zuverdienst pro Monat netto bringt (Jahr ÷ 12) – nach Beiträgen, Steuern und ggf. Rentenkürzung." style="${r.netto_zuv < 0 ? "border-color:var(--bad)" : ""}"><div class="k">Netto-Zuverdienst / Monat</div><div class="v" style="${r.netto_zuv < 0 ? "color:var(--bad)" : ""}">${fmt(r.netto_zuv_monat)}</div><div class="s">${fmt(r.netto_zuv)} pro Jahr${r.rentenverlust_netto > 0.005 ? ` · inkl. Rentenkürzung ${fmt(r.rentenverlust_netto, 0)}` : ""}</div></div>
+    <div class="tile" data-tip="So viel Prozent des Umsatzes bleiben netto."><div class="k">Nettoanteil vom Umsatz</div><div class="v" style="color:${ungue ? "var(--bad)" : "inherit"}">${fmtP(r.anteil_umsatz)}</div><div class="s">Umsatz ${fmt(r.umsatz, 0)}</div></div>
+    <div class="tile" data-tip="Kranken-, Pflege-, Rentenversicherung, Gewerbesteuer und Mehrsteuer durch den Zuverdienst."><div class="k">Abgaben + Mehrsteuer / Jahr</div><div class="v">${fmt(abgaben, 0)}</div><div class="s">KV/PV/RV ${fmt(sv.summe, 0)} · Steuer ${fmt(r.mehrsteuer + r.gew.gewst, 0)}</div></div>
+    <div class="tile" data-tip="Rente nach KV/PV und Steuer plus Netto-Zuverdienst, pro Monat."><div class="k">Gesamt netto / Monat</div><div class="v">${fmt(r.netto_gesamt_monat)}</div><div class="s">nur Rente: ${fmt(r.netto_ohne / 12)}</div></div>`;
+  const modus = $("ergModus"), ew = zustand.entwurf;
+  modus.hidden = !ew;
+  if (ew) {
+    modus.textContent = ew.zeigeNeu ? "▶ NEUE Werte (Entwurf)" : "▶ ALTE Werte (gespeichert)";
+    modus.classList.toggle("neu", ew.zeigeNeu);
+    modus.dataset.tip = "Mit „⇄“ in der Leiste oben schalten Sie zwischen gespeicherten (alten) und gefundenen (neuen) Werten um.";
+  }
+  $("warnungen").innerHTML = r.warnungen.filter(w => w[0] !== "info").map(w => `<div class="meldung ${w[0]}">⚠ ${esc(w[1])}</div>`).join("");
+  $("hinweise").innerHTML = r.warnungen.filter(w => w[0] === "info").map(w => `<div class="meldung info">ℹ ${esc(w[1])}</div>`).join("");
+  $("bericht").innerHTML = berichtZeilen(r, e, p).map(z => z.h ? `<tr><th colspan="3">${esc(z.h)}</th></tr>`
+    : `<tr class="${z.art}"${z.tip ? ` data-tip="${esc(z.tip)}"` : ""}><td>${esc(z.label)}</td><td class="w">${esc(z.wert)}</td><td class="x">${esc(z.extra)}</td></tr>`).join("");
+}
+function berichtText() {
+  const r = zustand.ergebnis, e = zustand.e, p = pCalc();
+  let t = `Pensionszuverdienstrechner Deutschland – Bericht vom ${new Date().toLocaleString("de-DE")}\nWerte für ${zustand.einst.param_jahr} (${zustand.einst.param_quelle})\n${"=".repeat(70)}\n\n`;
+  for (const [a, x] of r.warnungen) t += (a === "info" ? "Hinweis: " : "WARNUNG: ") + x + "\n";
+  t += "\n";
+  for (const z of berichtZeilen(r, e, p)) t += z.h ? `\n${z.h.toUpperCase()}\n` : `  ${z.label.padEnd(46)}${z.wert.padStart(16)}  ${z.extra}\n`;
+  return t;
+}
+
+/* =====================================================================
+   Tabelle & Diagramm
+   ===================================================================== */
+let tabModus = null, tabDaten = null;
+function tabBereichSetzen(stunden) {
+  const p = zustand.p, w = stunden ? [p.tab_von, p.tab_bis, p.tab_schritt] : [p.tab_umsatz_von, p.tab_umsatz_bis, p.tab_umsatz_schritt];
+  ["tabVon","tabBis","tabSchritt"].forEach((id, i) => $(id).value = zahlText(w[i]));
+  tabModus = stunden;
+}
+function tabelleAnzeigen() {
+  const e = zustand.e, stunden = e.zuv_modus === "stunden";
+  if (stunden !== tabModus) tabBereichSetzen(stunden);
+  $("tabTitel").textContent = stunden ? `Variation Stunden/Woche (Stundensatz ${fmt(e.stundensatz)}, ${zahlText(e.wochen)} Wochen)` : "Variation Jahresumsatz (bzw. Gewinn)";
+  let von, bis, schritt;
+  try { [von, bis, schritt] = ["tabVon","tabBis","tabSchritt"].map(id => zahl($(id).value)); } catch (x) { return; }
+  if (!(schritt > 0) || bis < von) return;
+  const n = Math.min(Math.floor((bis - von) / schritt + 1e-9) + 1, 1000);
+  const werte = Array.from({length: n}, (_, i) => Math.round((von + i * schritt) * 1e4) / 1e4);
+  tabDaten = tabelle(e, pCalc(), werte, stunden);
+  const kopf = [["x", stunden ? "Std/Woche" : "Umsatz", "Variierter Wert: Stunden pro Woche bzw. Jahresumsatz."], ["u","Umsatz","Jahresumsatz ohne Umsatzsteuer."],
+    ["g","Gewinn","Umsatz minus Betriebsausgaben."], ["s","KV/PV/RV","Zusätzliche Kranken-, Pflege- und ggf. Rentenversicherungsbeiträge pro Jahr."],
+    ["gw","GewSt","Gewerbesteuer pro Jahr (nur bei Gewerbe)."], ["m","Mehrsteuer","Zusätzliche Einkommensteuer + Soli + Kirchensteuer durch den Zuverdienst."],
+    ["rk","Rentenkürz.","Kürzung der Rente (netto) – nur bei EM- und Witwenrente."],
+    ["n","Netto/Jahr","Netto-Effekt des Zuverdienstes pro Jahr."], ["nm","Netto/Monat","Netto-Effekt ÷ 12."], ["a","Netto % Ums.","Netto in Prozent vom Umsatz."],
+    ["ge","Gesamt netto/Mon.","Rente netto + Zuverdienst netto, pro Monat."],
+    ["st","Status","abgabenfrei = keine KV/PV/RV · ungünstig = weniger netto als knapp unter der Freigrenze · Rente gekürzt = Hinzuverdienst wird angerechnet · OK = lohnend"]];
+  const klasse = {abgabenfrei: "s-unter", "ungünstig": "s-unguenstig", "Rente gekürzt": "s-pension", OK: "s-ok"};
+  $("datentabelle").innerHTML = `<thead><tr>${kopf.map(k => `<th data-tip="${esc(k[2])}">${esc(k[1])}</th>`).join("")}</tr></thead><tbody>` +
+    tabDaten.zeilen.map(r => `<tr class="${klasse[r.status]}"><td>${stunden ? zahlText(r.x) : zk(r.x, 0)}</td><td>${zk(r.umsatz, 0)}</td><td>${zk(r.gewinn, 0)}</td><td>${zk(r.sv.summe, 0)}</td><td>${zk(r.gew.gewst, 0)}</td><td>${zk(r.mehrsteuer, 0)}</td><td>${zk(r.rentenverlust_netto, 0)}</td><td>${zk(r.netto_zuv, 0)}</td><td>${zk(r.netto_zuv_monat, 0)}</td><td>${zk(r.anteil_umsatz, 1)}</td><td>${zk(r.netto_gesamt / 12, 0)}</td><td class="st">${r.status}</td></tr>`).join("") + "</tbody>";
+  diagramm(stunden);
+}
+function diagramm(stunden) {
+  const svg = $("diagramm"), z = tabDaten.zeilen;
+  if (z.length < 2) { svg.innerHTML = ""; return; }
+  const W = 1000, H = 320, ml = 70, mr = 16, mt = 34, mb = 42;
+  const xs = z.map(r => r.x);
+  const reihen = [["netto_zuv", "var(--c-netto)", "Netto-Zuverdienst"], ["abgaben", "var(--c-svs)", "KV/PV/RV + GewSt"], ["mehrsteuer", "var(--c-est)", "Mehrsteuer"], ["rentenverlust_netto", "var(--c-rk)", "Rentenkürzung"]];
+  const wert = (r, k) => k === "abgaben" ? r.sv.summe + r.gew.gewst : r[k];
+  const alle = z.flatMap(r => reihen.map(([k]) => wert(r, k)));
+  const ymin = Math.min(0, ...alle), ymax = Math.max(...alle) || 1, xmin = xs[0], xmax = xs[xs.length - 1];
+  const px = x => ml + (x - xmin) / (xmax - xmin) * (W - ml - mr), py = y => H - mb - (y - ymin) / (ymax - ymin) * (H - mt - mb);
+  let s = "";
+  const ub = tabDaten.ub;
+  if (ub) {
+    const a = stunden ? stundenFuerUmsatz(ub.umsatz_grenze, zustand.e) : ub.umsatz_grenze;
+    const b = stunden ? stundenFuerUmsatz(ub.umsatz_ende, zustand.e) : ub.umsatz_ende;
+    if (a !== null && b !== null && b > xmin && a < xmax) {
+      const x1 = px(Math.max(a, xmin)), x2 = px(Math.min(b, xmax));
+      s += `<rect x="${x1}" y="${mt}" width="${Math.max(1, x2 - x1)}" height="${H - mt - mb}" fill="var(--shade)"/><text x="${(x1 + x2) / 2}" y="${mt + 14}" text-anchor="middle" font-size="12" fill="var(--bad)">ungünstig</text>`;
+    }
+  }
+  for (let i = 0; i <= 5; i++) {
+    const y = ymin + (ymax - ymin) * i / 5;
+    s += `<line x1="${ml}" x2="${W - mr}" y1="${py(y)}" y2="${py(y)}" stroke="var(--line)" stroke-width="1"/><text x="${ml - 8}" y="${py(y) + 4}" text-anchor="end" font-size="12" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${zk(y, 0)}</text>`;
+  }
+  const step = Math.max(1, Math.floor(xs.length / 12));
+  xs.forEach((x, i) => { if (i % step === 0) s += `<text x="${px(x)}" y="${H - mb + 16}" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${stunden ? zahlText(x) : zk(x, 0)}</text>`; });
+  s += `<text x="${(W + ml) / 2}" y="${H - 6}" text-anchor="middle" font-size="12" fill="var(--muted)">${stunden ? "Stunden pro Woche" : "Jahresumsatz in €"}</text>`;
+  s += `<line x1="${ml}" x2="${W - mr}" y1="${py(0)}" y2="${py(0)}" stroke="var(--muted)" stroke-width="1"/>`;
+  for (const [k, farbe] of reihen)
+    s += `<polyline fill="none" stroke="${farbe}" stroke-width="2.5" stroke-linejoin="round" points="${z.map(r => `${px(r.x).toFixed(1)},${py(wert(r, k)).toFixed(1)}`).join(" ")}"/>`;
+  let lx = ml;
+  for (const [, farbe, name] of reihen) { s += `<line x1="${lx}" x2="${lx + 22}" y1="14" y2="14" stroke="${farbe}" stroke-width="3"/><text x="${lx + 28}" y="18" font-size="13" fill="var(--ink)">${name} / Jahr</text>`; lx += 70 + name.length * 7; }
+  svg.innerHTML = s;
+}
+function csvText() {
+  const z = x => x.toFixed(2).replace(".", ",");
+  let t = [tabModus ? "Std/Woche" : "Umsatz-Variante","Umsatz","Betriebsausgaben","Gewinn","KV","PV","RV","Gewerbesteuer","Mehrsteuer (ESt+Soli+KiSt)","Rentenkürzung netto","Netto/Jahr","Netto/Monat","Netto % Umsatz","Gesamt netto/Jahr","Status"].join(";") + "\r\n";
+  for (const r of tabDaten.zeilen) { const s = r.sv; t += [r.x, r.umsatz, r.ba, r.gewinn, s.kv, s.pv, s.rv, r.gew.gewst, r.mehrsteuer, r.rentenverlust_netto, r.netto_zuv, r.netto_zuv_monat, r.anteil_umsatz, r.netto_gesamt].map(z).join(";") + ";" + r.status + "\r\n"; }
+  return "﻿" + t;
+}
+
+/* =====================================================================
+   Parameter-Reiter
+   ===================================================================== */
+const PARAM_TIPPS = {
+  est_g0: "Grundfreibetrag: bis hier keine Einkommensteuer.", est_g1: "Ende der ersten Progressionszone (Grenzsteuersatz 14 % → ca. 24 %).",
+  est_g2: "Ende der zweiten Progressionszone – darüber gilt der Spitzensteuersatz.", est_g3: "Ab hier gilt der Reichensteuersatz.",
+  est_a: "Koeffizient der Tarifformel § 32a Abs. 1 Nr. 2 EStG – wird bei neuen Grenzen automatisch abgeleitet, wenn er nicht mitgeliefert wird.",
+  soli_freigrenze: "Bis zu dieser Einkommensteuer kein Solidaritätszuschlag (Einzelveranlagung).",
+  kv_zusatz: "Zusatzbeitrag Ihrer Krankenkasse (Durchschnitt 2026: 2,9 %).",
+  bezugsgroesse: "Bezugsgröße der Sozialversicherung – daraus folgen KVdR-Freigrenze (1/20 pro Monat), Mindestbeitrag freiwillig Versicherter (1/3) und die EM-Hinzuverdienstgrenzen.",
+  kv_bbg: "Beitragsbemessungsgrenze der Kranken- und Pflegeversicherung.", gfg_monat: "Geringfügigkeitsgrenze – darunter keine Rentenversicherungspflicht als Selbständiger.",
+  em_voll_grenze: "3/8 der 14-fachen monatlichen Bezugsgröße.", em_teil_min: "6/8 der 14-fachen monatlichen Bezugsgröße (Mindestwert).",
+  witwe_freibetrag: "26,4-faches des aktuellen Rentenwerts (ändert sich jeweils zum 1. Juli).",
+  gew_freibetrag: "Freibetrag beim Gewerbeertrag für Einzelunternehmer und Personengesellschaften.",
+  uebungsleiter_max: "§ 3 Nr. 26 EStG (ab 2026: 3.300 €).", ehrenamt_max: "§ 3 Nr. 26a EStG (ab 2026: 960 €).",
+};
+function paramAufbauen() {
+  const gruppen = {};
+  for (const [k, g, l, std, eh] of PARAMETER_DEF) (gruppen[g] = gruppen[g] || []).push([k, l, std, eh]);
+  $("paramGrid").innerHTML = Object.entries(gruppen).map(([g, ein]) => `<fieldset class="box"><legend>${esc(g)}</legend>${ein.map(([k, l, std, eh]) =>
+    `<div class="prow" id="pr_${k}" data-tip="${esc((PARAM_TIPPS[k] ? PARAM_TIPPS[k] + "\n\n" : "") + "Standardwert 2026: " + zt(std) + " " + eh)}"><label for="p_${k}">${esc(l)}</label><input type="text" inputmode="decimal" class="zahl" id="p_${k}"><span class="unit small muted">${esc(eh)}</span><div class="std">gespeichert: <span id="ps_${k}"></span> · Standard: ${zt(std)}</div></div>`).join("")}</fieldset>`).join("");
+  $("paramGrid").addEventListener("input", ev => {
+    const k = ev.target.id.slice(2); if (!DEF[k]) return;
+    let v; try { v = zahl(ev.target.value); ev.target.classList.remove("fehler"); } catch (x) { ev.target.classList.add("fehler"); return; }
+    $("pr_" + k).classList.toggle("geaendert", Math.abs(v - zustand.p[k]) > 1e-9);
+    $("ps_" + k).textContent = zt(zustand.p[k]);
+  });
+}
+function paramAnzeigen() {
+  for (const k of Object.keys(DEF)) { $("p_" + k).value = zahlText(zustand.p[k]); $("p_" + k).classList.remove("fehler"); $("pr_" + k).classList.remove("geaendert"); }
+}
+async function paramSpeichern() {
+  const neu = {};
+  for (const k of Object.keys(DEF)) {
+    try { neu[k] = zahl($("p_" + k).value); } catch (x) { zeigeToast(`Ungültiger Wert bei „${DEF[k].label}“.`); $("p_" + k).focus(); return; }
+  }
+  const diff = unterschiede(zustand.p, neu);
+  if (!diff.length) { zeigeToast("Keine Parameter geändert."); return; }
+  await parameterAendern(neu, `manuelle Änderung (${diff.length} Wert(e))`, {param_quelle: `manuell bearbeitet am ${datumDe(heute())}`, param_stand: heute()});
+  tabModus = null;
+  zeigeToast(`${diff.length} Parameter gespeichert – der vorherige Stand liegt in der Historie.`);
+}
+
+/* =====================================================================
+   Werte prüfen, Ermitteln, Historie
+   ===================================================================== */
+function pruefAnzeigen() {
+  const [stufe, meld] = pruefstatus(zustand.p, zustand.einst), e = zustand.einst;
+  const t = {gruen: "✔ Die Werte sind aktuell und plausibel.", gelb: "⚠ Bitte die Werte prüfen.", rot: "✖ Die Werte sind veraltet oder fehlerhaft – bitte aktualisieren."};
+  $("ampel").className = "ampel " + stufe; $("ampel").textContent = t[stufe];
+  $("standInfo").textContent = `Werte für ${e.param_jahr} · Quelle: ${e.param_quelle || "–"} · Stand: ${datumDe(e.param_stand)} · zuletzt geprüft: ${datumDe(e.geprueft_am)} · Historie: ${zustand.historie.length} Einträge`;
+  $("meldungen").innerHTML = meld.length ? meld.map(([s, m]) => `<li class="${s}">${esc(m)}</li>`).join("") : `<li>Keine Auffälligkeiten gefunden.</li>`;
+  if (document.activeElement !== $("paramJahr")) $("paramJahr").value = e.param_jahr;
+  if (document.activeElement !== $("pruefIntervall")) $("pruefIntervall").value = e.pruef_intervall_tage;
+  // Kopfzeile + Hinweisbalken
+  $("chipJahrW").textContent = e.param_jahr;
+  const chip = $("chipStatus");
+  chip.className = "chip " + {gruen: "ok", gelb: "warn", rot: "bad"}[stufe];
+  chip.textContent = {gruen: "Werte geprüft", gelb: "Werte prüfen", rot: "Werte veraltet"}[stufe];
+  const erinnern = e.erinnern_ab && heute() < e.erinnern_ab;
+  if (stufe !== "gruen" && !erinnern) {
+    $("banner").className = "banner " + (stufe === "rot" ? "bad" : "warn");
+    $("bannerTxt").innerHTML = meld.slice(0, 2).map(m => `<div>⚠ ${esc(m[1])}</div>`).join("") + (meld.length > 2 ? `<div>… und ${meld.length - 2} weitere Hinweise.</div>` : "");
+    $("banner").hidden = false;
+  } else $("banner").hidden = true;
+}
+function zieljahr() { const j = parseInt($("zieljahr").value, 10); return j >= 2020 && j <= 2100 ? j : Math.max(+zustand.einst.param_jahr, new Date().getFullYear()); }
+function quellenAnzeigen() {
+  const j = zieljahr();
+  $("quellenListe").innerHTML = WEBQUELLEN.map(([n, u, inh]) => `<a href="${esc(u.replace("{jahr}", j))}" target="_blank" rel="noopener"><b>${esc(n.replace("{jahr}", j))}</b><span>${esc(inh)}</span></a>`).join("");
+  $("themenSuche").innerHTML = THEMEN_SUCHE.map(([n, q]) => `<a href="https://www.google.com/search?q=${encodeURIComponent(q.replace("{jahr}", j))}" target="_blank" rel="noopener">${esc(n)}</a>`).join(" · ");
+}
+function zeilenAusWerten(alt, neu, kontext) {
+  return PARAMETER_DEF.filter(d => d[0] in neu).map(d => zeile(d[0], alt[d[0]], neu[d[0]], true, kontext));
+}
+function zeile(key, alt, neu, jahrOk, kontext, quellen) {
+  const gleich = alt !== undefined && Math.abs(neu - alt) < 1e-9;
+  return {key, alt, neu, gleich, jahr_ok: jahrOk, kontext, quellen: quellen || [], an: !gleich && jahrOk};
+}
+function vergleich(titel, info, zeilen, jahr, knopf = "Ausgewählte übernehmen & speichern") {
+  return new Promise(resolve => {
+    const abw = zeilen.filter(z => !z.gleich).length;
+    const bestaetigt = zeilen.filter(z => z.jahr_ok).length, vollst = bestaetigt >= 0.6 * PARAMETER_DEF.length - 15;
+    $("modalTitel").textContent = titel;
+    $("modalInfo").innerHTML = `${esc(info).replace(/\n/g, "<br>")}<br>${zeilen.length} Wert(e): ${abw} abweichend, ${zeilen.length - abw} bestätigen Ihre aktuellen Werte. Zeile anklicken zeigt die Fundstelle.`;
+    $("modalInhalt").innerHTML = `<div class="tabwrap"><table class="vgl"><thead><tr><th>übernehmen</th><th>Gruppe</th><th>Parameter</th><th>aktuell</th><th>neu/gefunden</th><th></th><th>Status</th><th>Jahr</th></tr></thead><tbody>${
+      zeilen.map((z, i) => `<tr data-i="${i}" class="${z.gleich ? "gleich" : "abw"}"><td><input type="checkbox" aria-label="übernehmen" ${z.an ? "checked" : ""} ${z.gleich ? "disabled" : ""}></td><td>${esc(DEF[z.key].gruppe)}</td><td>${esc(DEF[z.key].label)}</td><td class="w">${zt(z.alt)}</td><td class="w">${zt(z.neu)}</td><td>${esc(DEF[z.key].einheit)}</td><td>${z.gleich ? "= gleich" : "abweichend"}</td><td>${z.jahr_ok ? "✔ passt" : "? unbestätigt"}</td></tr>`).join("")
+    }</tbody></table></div><div class="fund" id="fund">Zeile anklicken, um die Fundstelle zu sehen.</div>`;
+    const jahrBox = jahr ? `<label class="check"><input type="checkbox" id="vglJahr" ${vollst ? "checked" : ""}> Werte gelten danach für Jahr ${jahr}${vollst ? "" : " (nur wenige Werte gefunden – erst setzen, wenn alle Werte geprüft sind)"}</label>` : "";
+    $("modalFuss").innerHTML = `<button class="btn klein" type="button" id="vglAlle">Alle abweichenden</button><button class="btn klein" type="button" id="vglKeine">Keine</button>${jahrBox}<div class="rechts"><button class="btn" type="button" id="vglAbbr">Abbrechen</button><button class="btn primary" type="button" id="vglOk">${esc(knopf)}</button></div>`;
+    $("modal").hidden = false;
+    const tb = $("modalInhalt").querySelector("tbody");
+    tb.addEventListener("click", ev => {
+      const tr = ev.target.closest("tr"); if (!tr) return;
+      const z = zeilen[+tr.dataset.i];
+      if (ev.target.type === "checkbox") z.an = ev.target.checked;
+      tb.querySelectorAll("tr.sel").forEach(t => t.classList.remove("sel")); tr.classList.add("sel");
+      $("fund").textContent = (z.kontext || "–") + (z.quellen.length > 1 ? "\n\nGefunden in: " + z.quellen.join(", ") : "") + (z.jahr_ok ? "" : "\n\n? Bei diesem Wert steht keine passende Jahresangabe – bitte prüfen.");
+    });
+    const alle = an => tb.querySelectorAll("tr").forEach(tr => { const z = zeilen[+tr.dataset.i]; if (!z.gleich) { z.an = an; tr.querySelector("input").checked = an; } });
+    $("vglAlle").onclick = () => alle(true); $("vglKeine").onclick = () => alle(false);
+    const zu = wert => { $("modal").hidden = true; resolve(wert); };
+    $("vglAbbr").onclick = () => zu(null);
+    $("vglOk").onclick = () => zu({werte: Object.fromEntries(zeilen.filter(z => z.an && !z.gleich).map(z => [z.key, z.neu])), jahrSetzen: !!($("vglJahr") && $("vglJahr").checked)});
+    const erste = tb.querySelector("tr.abw") || tb.querySelector("tr"); if (erste) erste.click();
+  });
+}
+function frage(titel, text, ja = "Ja", nein = "Abbrechen") {
+  return new Promise(resolve => {
+    $("modalTitel").textContent = titel; $("modalInfo").textContent = ""; $("modalInhalt").innerHTML = `<p>${esc(text).replace(/\n/g, "<br>")}</p>`;
+    $("modalFuss").innerHTML = `<div class="rechts"><button class="btn" type="button" id="fNein">${esc(nein)}</button><button class="btn primary" type="button" id="fJa">${esc(ja)}</button></div>`;
+    $("modal").hidden = false;
+    $("fNein").onclick = () => { $("modal").hidden = true; resolve(false); };
+    $("fJa").onclick = () => { $("modal").hidden = true; resolve(true); };
+  });
+}
+async function ergebnisZeigen(zeilen, meta) {
+  if (!zeilen.length) { await frage("Keine Werte gefunden", "Im Text wurden keine passenden Werte gefunden.\n\nTipp: Prüfen Sie, ob der ganze Seitentext kopiert wurde (Strg+A, Strg+C), oder tragen Sie die Werte im Reiter „Parameter“ ein.", "OK", "Schließen"); return; }
+  await entwurfSetzen(zeilen, meta);
+  if (zustand.entwurf) { tabWaehlen("berechnung"); window.scrollTo({top: 0, behavior: "smooth"}); }
+}
+
+/* ---------- Entwurf: aktuelle Werte ermitteln → alt/neu vergleichen → speichern ---------- */
+const pCalc = () => (zustand.entwurf && zustand.entwurf.zeigeNeu) ? zustand.entwurf.p : zustand.p;
+// Werte-Dienst: werte.json neben der Seite (GitHub Pages) bzw. direkt aus dem GitHub-Repository
+const WERTE_DIENST = ["werte.json", "https://raw.githubusercontent.com/Jazz-Explorer/Pensionszuverdienstrechner-Deutschland/main/werte.json"];
+let ermittelnLaeuft = false, ermittelText = "";
+function leisteAktualisieren() {
+  const ew = zustand.entwurf, leiste = $("werteleiste");
+  if (!ew) {
+    leiste.classList.remove("neu"); $("wlKnoepfe").hidden = true;
+    const e = zustand.einst;
+    $("wlText").textContent = ermittelText || `Verwendet: gespeicherte Werte für ${e.param_jahr} (${e.param_quelle || "–"}, geprüft ${datumDe(e.geprueft_am || e.param_stand)})`;
+    return;
+  }
+  const neu = ew.zeigeNeu, n = unterschiede(zustand.p, ew.p).length;
+  leiste.classList.toggle("neu", neu); $("wlKnoepfe").hidden = false;
+  const b = $("btnUmschalten");
+  b.textContent = neu ? "Anzeige: NEUE Werte  ⇄  alt" : "Anzeige: ALTE Werte  ⇄  neu";
+  b.classList.toggle("neu", neu); b.setAttribute("aria-pressed", neu ? "true" : "false");
+  let t = `ENTWURF (nicht gespeichert): ${n} neue Wert(e)${ew.jahr ? `, Werte-Jahr ${ew.jahr}` : ""} – ${ew.meta.quelle || ""}`;
+  try {
+    const ra = berechne(zustand.e, zustand.p), rn = berechne(zustand.e, ew.p);
+    t += `\nNetto-Zuverdienst/Jahr: alt ${fmt(ra.netto_zuv)} → neu ${fmt(rn.netto_zuv)} · Gesamt netto/Monat: alt ${fmt(ra.netto_gesamt_monat)} → neu ${fmt(rn.netto_gesamt_monat)}`;
+  } catch (x) { /* unbrauchbare Werte */ }
+  $("wlText").textContent = t;
+}
+async function werteErmitteln() {
+  if (ermittelnLaeuft) return;
+  ermittelnLaeuft = true; $("btnErmitteln").disabled = true; $("btnErmitteln").textContent = "Suche läuft …";
+  ermittelText = "Lade aktuelle Werte vom Werte-Dienst …"; leisteAktualisieren();
+  let daten = null, fehler = [];
+  for (const url of WERTE_DIENST) {
+    if (location.protocol === "file:" && !url.startsWith("http")) continue;
+    try {
+      const r = await fetch(url + (url.includes("?") ? "&" : "?") + "t=" + Date.now(), {cache: "no-store"});
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const d = await r.json();
+      if (d && d.format === "pensionszuverdienstrechner-de-werte" && d.werte) { daten = d; break; }
+      throw new Error("unbekanntes Format");
+    } catch (e) { fehler.push(`${url}: ${e.message || e}`); }
+  }
+  ermittelnLaeuft = false; $("btnErmitteln").disabled = false; $("btnErmitteln").textContent = "🔍 Aktuelle Werte ermitteln"; ermittelText = "";
+  if (!daten) {
+    leisteAktualisieren();
+    await frage("Werte-Dienst nicht erreichbar", "Die aktuellen Werte konnten hier nicht automatisch geladen werden.\n\nIn dieser Umgebung (z. B. als Datei geöffnet oder auf claude.ai) darf die Seite keine fremden Adressen abrufen. Auf der GitHub-Seite funktioniert der Knopf, sobald der Werte-Dienst eingerichtet ist.\n\nAlternative: Reiter „Werte prüfen“ → Quelle öffnen, Seitentext kopieren, einfügen und „Werte ermitteln“.", "Zur Text-Methode", "Schließen")
+      && tabWaehlen("werte");
+    return;
+  }
+  const zeilen = PARAMETER_DEF.filter(d => daten.werte[d[0]]).map(d => { const v = daten.werte[d[0]];
+    return zeile(d[0], zustand.p[d[0]], Number(v.wert), !!v.jahr_ok, v.kontext || "", v.quellen || []); });
+  const alter = Math.floor((Date.now() - Date.parse(daten.erstellt)) / 864e5);
+  const meta = {jahr: +daten.jahr, quelle: `Werte-Dienst (${(daten.quellen || []).length} Quellen, Stand ${datumDe((daten.erstellt || "").slice(0, 10))})`,
+    stand: (daten.erstellt || heute()).slice(0, 10), hinweis: (daten.fehler && daten.fehler.length ? "Nicht erreichbar: " + daten.fehler.join("; ") : "")
+      + (alter > 7 ? ` Achtung: Der Werte-Dienst-Stand ist ${alter} Tage alt.` : "")};
+  await entwurfSetzen(zeilen, meta);
+}
+async function entwurfSetzen(zeilen, meta, {zeigeNeu = true, still = false} = {}) {
+  if (!zeilen.length) { leisteAktualisieren(); if (!still) zeigeToast("Es wurden keine passenden Werte gefunden."); return; }
+  const neu = Object.fromEntries(zeilen.filter(z => z.an).map(z => [z.key, z.neu]));
+  // neue Tarifgrenzen ohne neue Formel-Koeffizienten: Koeffizienten passend ableiten
+  if (TARIF_ECKWERTE.some(k => k in neu)) { const q = koeffizientenAbleiten({...zustand.p, ...neu});
+    for (const k of ["est_a", "est_b", "est_c2", "est_t1", "est_k4", "est_k5"]) if (!(k in neu) && Math.abs(q[k] - zustand.p[k]) > 1e-9) neu[k] = q[k]; }
+  const bestaetigt = zeilen.filter(z => z.jahr_ok).length;
+  const jahrWechsel = meta.jahr && +meta.jahr !== +zustand.einst.param_jahr && bestaetigt >= 0.6 * PARAMETER_DEF.length - 15;
+  if (!Object.keys(neu).length && !jahrWechsel) {
+    Object.assign(zustand.einst, {geprueft_am: heute(), erinnern_ab: ""}); await Store.set("einst", zustand.einst);
+    pruefAnzeigen(); leisteAktualisieren();
+    if (!still) {
+      const offen = zeilen.filter(z => !z.gleich && !z.jahr_ok).length;
+      await frage("Werte sind aktuell", `${zeilen.length} Werte gefunden – alle mit passender Jahresangabe stimmen mit Ihren gespeicherten Werten überein. Prüfdatum gespeichert.` +
+        (offen ? `\n\n${offen} abweichende Wert(e) ohne Jahresangabe sehen Sie unter „Auswahl“ beim nächsten Entwurf oder im Reiter „Werte prüfen“.` : "") +
+        (meta.hinweis ? `\n\n${meta.hinweis}` : ""), "OK", "Schließen");
+    }
+    return;
+  }
+  zustand.entwurf = {p: {...zustand.p, ...neu}, zeilen, meta, zeigeNeu, jahr: jahrWechsel ? +meta.jahr : null};
+  rechnen();
+  zeigeToast(`Entwurf mit ${Object.keys(neu).length} neuen Wert(en) – mit „⇄“ vergleichen, dann speichern.`);
+}
+function entwurfUmschalten() { if (!zustand.entwurf) return; zustand.entwurf.zeigeNeu = !zustand.entwurf.zeigeNeu; rechnen(); }
+async function entwurfSpeichern() {
+  const ew = zustand.entwurf; if (!ew) return;
+  const meta = {param_stand: ew.meta.stand || heute(), geprueft_am: heute(), erinnern_ab: "", param_quelle: ew.meta.quelle || ""};
+  if (ew.jahr) meta.param_jahr = ew.jahr;
+  const n = unterschiede(zustand.p, ew.p).length;
+  zustand.entwurf = null;
+  await parameterAendern(ew.p, `Übernahme aus ${ew.meta.quelle || "Websuche"}`, meta);
+  historieAnzeigen(); pruefAnzeigen(); leisteAktualisieren();
+  zeigeToast(`${n} neue Wert(e) gespeichert – die bisherigen Werte stehen in der Historie.`);
+}
+async function entwurfVerwerfen() {
+  if (!zustand.entwurf) return;
+  if (!await frage("Entwurf verwerfen", "Den Entwurf verwerfen? Die gespeicherten Werte bleiben unverändert.", "Verwerfen")) return;
+  zustand.entwurf = null; rechnen();
+}
+async function entwurfAuswahl() {
+  const ew = zustand.entwurf; if (!ew) return;
+  const imEntwurf = new Set(unterschiede(zustand.p, ew.p));
+  const zeilen = ew.zeilen.map(z => ({...z, an: imEntwurf.has(z.key)}));
+  const j = ew.meta.jahr;
+  const res = await vergleich("Entwurf – Werte auswählen", `Quelle: ${ew.meta.quelle} · gesucht für Jahr ${j}${ew.meta.hinweis ? "\n" + ew.meta.hinweis : ""}\nAutomatisch ermittelte Werte sind Vorschläge – bitte die Fundstelle prüfen.`,
+    zeilen, j && +j !== +zustand.einst.param_jahr ? j : null, "Auswahl in den Entwurf übernehmen");
+  if (!res) return;
+  ew.p = {...zustand.p, ...res.werte};
+  ew.jahr = (j && res.jahrSetzen) ? +j : null;
+  if (!Object.keys(res.werte).length && !ew.jahr) zustand.entwurf = null;
+  rechnen();
+}
+function paketLesen(d) {
+  if (d && d.format && !String(d.format).includes("-de-")) throw new Error("Diese Datei gehört zur österreichischen Version.");
+  const werte = d && d.parameter ? d.parameter : d;
+  if (!werte || typeof werte !== "object" || Array.isArray(werte)) throw new Error("Unbekanntes Format.");
+  const param = {};
+  for (const [k, v] of Object.entries(werte)) if (k in PARAMETER_STANDARD) { const n = Number(v); if (!isFinite(n)) throw new Error(`Parameter „${k}“ ist keine Zahl.`); param[k] = n; }
+  if (!Object.keys(param).length) throw new Error("Keine bekannten Parameter gefunden.");
+  return {jahr: d.parameter ? (+d.jahr || null) : null, stand: d.parameter ? String(d.stand || "") : "", quelle: d.parameter ? String(d.quelle || "") : "", parameter: param};
+}
+function historieAnzeigen() {
+  const h = zustand.historie;
+  $("historie").innerHTML = `<thead><tr><th>gesichert am</th><th>gesichert vor / Anlass</th><th>Werte-Jahr</th><th>Quelle der Werte</th><th>Abweichungen zu jetzt</th><th></th></tr></thead><tbody>${
+    h.length ? h.map((e, i) => { const n = unterschiede(zustand.p, e.parameter || {}).length;
+      return `<tr data-i="${i}"><td>${esc(zeitDe(e.zeit))}</td><td>${esc(e.anlass || "")}</td><td>${esc(e.jahr ?? "")}</td><td>${esc(e.quelle || "")}</td><td>${n ? n + " Wert(e)" : "identisch"}</td><td style="white-space:nowrap"><button class="btn klein" type="button" data-a="vgl" data-tip="Zeigt alt/neu. Sie wählen, welche Werte zurückgeholt werden.">Vergleichen…</button> <button class="btn klein" type="button" data-a="ganz" data-tip="Setzt ALLE Werte auf diesen Stand zurück (der jetzige Stand wird vorher gesichert).">Wiederherstellen</button> <button class="btn klein" type="button" data-a="del" data-tip="Entfernt den Eintrag aus der Historie.">Löschen</button></td></tr>`; }).join("")
+    : `<tr><td colspan="6" class="muted">Noch keine Einträge. Sobald Sie Werte ändern, wird der vorherige Stand hier gesichert.</td></tr>`}</tbody>`;
+}
+async function historieAktion(a, i) {
+  const e = zustand.historie[i]; if (!e) return;
+  if (a === "vgl") {
+    const zeilen = zeilenAusWerten(zustand.p, e.parameter, `Historie: Stand vom ${zeitDe(e.zeit)} – ${e.quelle || ""}`).filter(z => !z.gleich);
+    if (!zeilen.length) { zeigeToast("Dieser Stand ist identisch mit den aktuellen Werten."); return; }
+    const res = await vergleich("Werte aus der Historie zurückholen", `Stand vom ${zeitDe(e.zeit)} (Werte-Jahr ${e.jahr}, ${e.quelle || ""})`, zeilen, e.jahr, "Ausgewählte zurückholen & speichern");
+    if (!res || !Object.keys(res.werte).length) return;
+    const meta = {param_quelle: `aus Historie vom ${zeitDe(e.zeit)} (${e.quelle || ""})`};
+    if (res.jahrSetzen && e.jahr) meta.param_jahr = +e.jahr;
+    await parameterAendern(res.werte, `Wiederherstellung (teilweise) vom ${zeitDe(e.zeit)}`, meta);
+  } else if (a === "ganz") {
+    if (!await frage("Wiederherstellen", `Alle Werte auf den Stand vom ${zeitDe(e.zeit)} zurücksetzen?\n\nDer jetzige Stand wird vorher in der Historie gesichert.`, "Wiederherstellen")) return;
+    await parameterAendern(e.parameter, `Wiederherstellung vom ${zeitDe(e.zeit)}`, {param_jahr: +e.jahr || zustand.einst.param_jahr, param_quelle: e.quelle || "", param_stand: e.stand || ""});
+    zeigeToast("Stand wiederhergestellt.");
+  } else if (a === "del") {
+    if (!await frage("Eintrag löschen", "Markierten Eintrag aus der Historie löschen?", "Löschen")) return;
+    zustand.historie.splice(i, 1);
+    await Store.historieLoeschen(e.id);
+  }
+  historieAnzeigen(); pruefAnzeigen();
+}
+
+/* =====================================================================
+   Dateien speichern (claude.ai: Download-Freigabe · lokal: Browser-Download)
+   ===================================================================== */
+async function dateiSpeichern(name, inhalt) {
+  if (Store.downloads) {
+    try { await Store.downloads.save({filename: name, data: inhalt}); zeigeToast(`„${name}“ gespeichert.`); }
+    catch (e) { if (e && e.code !== "declined") zeigeToast("Speichern nicht möglich: " + (e.message || e.code)); }
+    return;
+  }
+  try {
+    const url = URL.createObjectURL(new Blob([inhalt], {type: "text/plain;charset=utf-8"}));
+    const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  } catch (e) { zeigeToast("Speichern nicht möglich."); }
+}
+
+/* =====================================================================
+   Hilfeblasen, Toast, Tabs
+   ===================================================================== */
+const tip = $("tip"); let tipEl = null, tipTimer = null;
+function tipZeigen(el, x, y) {
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  let left = x + 14, top = y + 18;
+  if (left + r.width > innerWidth - 8) left = Math.max(8, innerWidth - r.width - 8);
+  if (top + r.height > innerHeight - 8) top = Math.max(8, y - r.height - 12);
+  tip.style.left = left + "px"; tip.style.top = top + "px";
+}
+document.addEventListener("pointerover", ev => {
+  if (ev.pointerType === "touch") return;
+  const el = ev.target.closest("[data-tip]");
+  if (el === tipEl) return;
+  tipEl = el; clearTimeout(tipTimer); tip.hidden = true;
+  if (el && el.dataset.tip) { const x = ev.clientX, y = ev.clientY; tipTimer = setTimeout(() => tipZeigen(el, x, y), 450); }
+});
+document.addEventListener("pointerdown", () => { clearTimeout(tipTimer); tip.hidden = true; tipEl = null; });
+document.addEventListener("contextmenu", ev => { // langes Tippen am Handy zeigt die Erklärung
+  const el = ev.target.closest("[data-tip]"); if (!el || ev.target.closest("input,textarea,select,a")) return;
+  ev.preventDefault(); tipEl = el; const r = el.getBoundingClientRect(); tipZeigen(el, r.left, r.bottom);
+});
+let toastTimer;
+function zeigeToast(t) { const el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => el.hidden = true, 3800); }
+function tabWaehlen(name) {
+  zustand.tab = name;
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === name ? "true" : "false"));
+  for (const t of ["berechnung","tabelle","parameter","werte","hilfe"]) $("tab-" + t).hidden = t !== name;
+  if (name === "tabelle") tabelleAnzeigen();
+  if (name === "werte") { pruefAnzeigen(); historieAnzeigen(); quellenAnzeigen(); }
+  try { localStorage.setItem("pzr_de_tab", name); } catch (e) {}
+}
+
+/* =====================================================================
+   Hilfe-Text
+   ===================================================================== */
+function hilfeAufbauen() {
+  const j = Math.max(+zustand.einst.param_jahr, new Date().getFullYear());
+  const quellen = WEBQUELLEN.map(([n, u, inh]) => `<li><a href="${esc(u.replace("{jahr}", j))}" target="_blank" rel="noopener">${esc(n.replace("{jahr}", j))}</a> – ${esc(inh)}</li>`).join("");
+  const S = [
+    ["h-start", "Kurzanleitung", `<p>Der Rechner zeigt, wie viel von einem selbständigen Zuverdienst (freiberuflich oder gewerblich) neben einer gesetzlichen Rente netto übrig bleibt – nach Kranken- und Pflegeversicherung, ggf. Rentenversicherung, Gewerbesteuer, Einkommensteuer, Soli, Kirchensteuer und einer eventuellen Rentenkürzung.</p>
+      <p class="box">Fahren Sie mit der Maus über ein Eingabefeld, eine Ergebniszeile oder eine Tabellenüberschrift – nach einem Moment erscheint eine Hilfeblase. Am Handy: lange auf die Zeile tippen.</p>
+      <ol><li>Rentenart wählen und die Rente eintragen (brutto laut Rentenbescheid oder Zahlbetrag). Rentenbeginn und Geburtsjahr eintragen.</li><li>Tätigkeit (Freiberufler oder Gewerbe), Krankenversicherung, Kirchensteuer und ggf. Zusammenveranlagung wählen.</li><li>Zuverdienst eintragen – z. B. Stundensatz, Stunden pro Woche und Arbeitswochen.</li><li>Betriebsausgaben wählen.</li><li>Ergebnis ablesen, rote und orange Hinweise beachten. Im Reiter „Tabelle &amp; Diagramm“ sehen Sie die Wirkung von mehr oder weniger Stunden.</li></ol>
+      <p>Die Berechnung aktualisiert sich bei jeder Eingabe. Die Beispielwerte beim ersten Öffnen sind nur ein Muster.</p>`],
+    ["h-rentenart", "Rentenart – wie viel darf ich hinzuverdienen?", `<ul><li><b>Regelaltersrente:</b> unbegrenzter Hinzuverdienst, keine Kürzung.</li>
+      <li><b>Vorgezogene Altersrenten</b> (langjährig Versicherte, besonders langjährig Versicherte, schwerbehinderte Menschen): seit 1. 1. 2023 <b>keine Hinzuverdienstgrenze</b> mehr.</li>
+      <li><b>Volle Erwerbsminderung:</b> Hinzuverdienstgrenze 2026 20.763,75 € im Jahr (3/8 der 14-fachen Bezugsgröße). Darüber werden 40 % des übersteigenden Betrags (auf den Monat umgerechnet) von der Rente abgezogen. Wichtig: Volle Erwerbsminderung heißt weniger als 3 Stunden Arbeit täglich – mehr Arbeit kann die Rente selbst gefährden.</li>
+      <li><b>Teilweise Erwerbsminderung:</b> individuelle Grenze (bestes Verdienstjahr der letzten 15 Jahre), mindestens 41.527,50 € (2026) – steht im Rentenbescheid. Leistungsvermögen unter 6 Stunden täglich.</li>
+      <li><b>Witwen-/Witwerrente</b> (große, neues Recht): vom Gewinn werden pauschal 39,8 % abgezogen (§ 18b SGB IV); was über dem Freibetrag liegt (ab 1. 7. 2026: 1.122,53 € im Monat = 26,4 × aktueller Rentenwert), wird zu 40 % angerechnet. Maßgeblich ist das Einkommen des Vorjahres, jeweils ab 1. Juli. Eigene Renten zählen ebenfalls (pauschal −14 %).</li></ul>
+      <p class="box">Hinzuverdienst bei EM- und Witwenrente ist der Rentenversicherung zu melden.</p>`],
+    ["h-freiberufler", "Freiberufler oder Gewerbe?", `<p><b>Freiberufler</b> (§ 18 EStG) zahlen keine Gewerbesteuer und brauchen keine Gewerbeanmeldung – nur die Anmeldung beim Finanzamt: z. B. Lehrer/Dozenten, Schriftsteller, Journalisten, Übersetzer, Künstler, Ingenieure, Architekten, Ärzte, Steuerberater. IT-Berater und Softwareentwickler sind oft freiberuflich (ingenieurähnlich), manchmal gewerblich – das entscheidet das Finanzamt.</p>
+      <p><b>Gewerbetreibende</b> melden ein Gewerbe an und zahlen Gewerbesteuer – aber erst über 24.500 € Gewinn (Freibetrag). Die Gewerbesteuer wird bis zum 4-Fachen des Messbetrags auf die Einkommensteuer angerechnet; bei Hebesätzen bis ca. 400 % gleicht sich das weitgehend aus.</p>
+      <p class="box">Die „Aktivrente“ (seit 2026, bis 2.000 € im Monat steuerfrei) gilt nur für Arbeitnehmer nach der Regelaltersgrenze – nicht für Selbständige und Freiberufler.</p>`],
+    ["h-kv", "Kranken- und Pflegeversicherung", `<ul><li><b>KVdR</b> (pflichtversichert als Rentner): Auf die Rente zahlen Sie die halbe KV und die volle PV. Arbeitseinkommen ist bis 1/20 der Bezugsgröße im Monat (2026: 197,75 €) beitragsfrei – darüber KV (14,6 % + Zusatzbeitrag) und PV auf das GANZE Arbeitseinkommen, allein getragen. Achtung: Ist die Selbständigkeit hauptberuflich (grob: mehr als 20 Std/Woche oder mehr Gewinn als Rente), entfällt die KVdR.</li>
+      <li><b>Freiwillig gesetzlich:</b> Beiträge auf alle Einnahmen (ermäßigter Satz 14,0 % + Zusatzbeitrag), mindestens auf 1/3 der Bezugsgröße. Auf die Rente gibt es einen Zuschuss der Rentenversicherung.</li>
+      <li><b>Privat:</b> Der Zuverdienst ändert den Beitrag nicht.</li></ul>
+      <p>Pflegeversicherung 3,6 %, Kinderlose +0,6 %. Den Zusatzbeitrag Ihrer Kasse tragen Sie im Reiter „Parameter“ ein (Durchschnitt 2026: 2,9 %).</p>`],
+    ["h-rv", "Rentenversicherung für Selbständige", `<p>Die meisten Selbständigen sind nicht rentenversicherungspflichtig. Pflicht besteht z. B. für Lehrer und Dozenten, Pflegepersonen, Hebammen, Handwerker in der Handwerksrolle und „arbeitnehmerähnliche“ Selbständige (im Wesentlichen ein Auftraggeber). Künstler und Publizisten: Künstlersozialkasse (nicht berechnet). Mit Regelaltersgrenze und Vollrente sind Sie versicherungsfrei. Unter 603 € Arbeitseinkommen im Monat (2026) fallen keine Beiträge an.</p>`],
+    ["h-est", "Einkommensteuer", `<ul><li>Tarif 2026 (§ 32a EStG): Grundfreibetrag 12.348 €, Eingangssteuersatz 14 %, 42 % ab 69.879 €, 45 % ab 277.826 €.</li>
+      <li>Die Rente ist nur zum <b>Besteuerungsanteil</b> steuerpflichtig, abhängig vom Rentenbeginn (2024: 83 %, 2025: 83,5 %, 2026: 84 %). Der steuerfreie Teil wird ab dem Folgejahr als fester Euro-Betrag festgeschrieben – kennen Sie ihn, tragen Sie ihn als „Rentenfreibetrag“ ein.</li>
+      <li>Abzüge: 102 € Werbungskosten bei Renten, 36 € Sonderausgaben-Pauschbetrag, KV-/PV-/RV-Beiträge.</li>
+      <li><b>Altersentlastungsbetrag</b> (§ 24a): Wer vor Jahresbeginn 64 war, bekommt auf den Gewinn einen Freibetrag – Prozentsatz und Höchstbetrag hängen vom Geburtsjahr ab.</li>
+      <li>Soli erst ab 20.350 € Einkommensteuer (zusammen 40.700 €), mit Milderungszone. Kirchensteuer 8 % (Bayern, Baden-Württemberg) bzw. 9 %.</li>
+      <li>Auf die Rente wird keine Steuer einbehalten – alles läuft über die Steuererklärung. Angezeigt wird die <b>Mehrsteuer</b> durch den Zuverdienst.</li>
+      <li>Übungsleiterfreibetrag 3.300 € bzw. Ehrenamtspauschale 960 € (2026): steuer- und beitragsfrei.</li></ul>`],
+    ["h-ba", "Betriebsausgaben und Umsatzsteuer", `<ul><li>Tatsächliche Ausgaben pro Jahr oder Monat, oder in % vom Umsatz.</li><li>Pauschale für nebenberufliche wissenschaftliche, künstlerische, schriftstellerische, Lehr- und Prüfungstätigkeit: 25 %, höchstens 900 € im Jahr.</li><li>Hauptberufliche Schriftsteller und Journalisten: 30 %, höchstens 3.600 €.</li></ul>
+      <p>Umsatzsteuer: Als Kleinunternehmer (Vorjahresumsatz bis 25.000 €, laufendes Jahr bis 100.000 €) keine Umsatzsteuer; darüber 19 %. Der Stundensatz hier ist Ihr Honorar ohne Umsatzsteuer.</p>`],
+    ["h-ungue", "Ungünstiger Bereich", `<p>Knapp über einer Freigrenze fallen Beiträge auf den GANZEN Gewinn an – netto bleibt dann weniger als knapp darunter. Das betrifft vor allem die KVdR-Freigrenze (197,75 € Arbeitseinkommen im Monat) und bei rentenversicherungspflichtigen Selbständigen die Geringfügigkeitsgrenze (603 €). Der Rechner zeigt, ab welchem Umsatz sich der Mehrverdienst wieder lohnt.</p>`],
+    ["h-ergebnis", "Ergebnisse verstehen", `<ul><li><b>Netto pro Jahr</b> = Netto-Effekt: was Sie insgesamt mehr haben als ohne Zuverdienst – nach Beiträgen, Gewerbesteuer, Mehrsteuer und ggf. Rentenkürzung.</li><li><b>Gesamt netto</b> = Rente nach KV/PV und Steuer plus Netto-Zuverdienst.</li><li>„Von +100 € mehr Umsatz bleiben netto“ = aktuelle Grenzbelastung.</li></ul>
+      <p>Die Tabelle variiert Stunden bzw. Umsatz; Farben: blau = abgabenfrei, rot = ungünstig, dunkelrot = Rente gekürzt, grün = lohnend.</p>`],
+    ["h-werte", "Werte prüfen & aktualisieren", `<p>Steuer- und Sozialversicherungswerte ändern sich jedes Jahr. <b>„🔍 Aktuelle Werte ermitteln“</b> in der Leiste oben holt die Werte vom <b>Werte-Dienst</b>: Er durchsucht täglich die unten genannten Quellen – darunter die Gesetzestexte § 32a EStG, § 3 SolzG und § 3 EStG – mit derselben Erkennung wie die Windows-Version.</p>
+      <ol><li>Abweichende Werte mit passender Jahresangabe werden als <b>Entwurf</b> vorbelegt – gespeichert ist noch nichts.</li><li><b>„⇄“</b> schaltet die gesamte Berechnung zwischen alten und neuen Werten um.</li><li><b>„Auswahl…“</b> zeigt jeden Wert mit Fundstelle.</li><li><b>„💾 Neue Werte speichern“</b> übernimmt den Entwurf; die alten Werte kommen in die Historie.</li></ol>
+      <p>Ab Oktober wird zuerst das Folgejahr gesucht – es wird nur übernommen, wenn dafür (fast) alle Werte vorliegen. Ändern sich nur die Tarifgrenzen, leitet der Rechner die Tarifformel passend ab.</p>
+      <p>Auf claude.ai oder als Datei geöffnet darf die Seite den Werte-Dienst nicht abrufen – dann hilft die <b>Text-Methode</b> im Reiter „Werte prüfen &amp; Historie“: Quelle öffnen, Strg+A und Strg+C, Text einfügen, „Werte ermitteln“.</p>
+      <p><b>Mögliche Quellen</b> (das Jahr wird eingesetzt):</p><ul>${quellen}</ul>`],
+    ["h-historie", "Historie – frühere Werte wiederherstellen", `<p>Bei JEDER Änderung der Rechenwerte wird der bisherige Stand automatisch gesichert (bis 300 Einträge). „Vergleichen…“ zeigt alt/neu und holt einzelne Werte zurück, „Wiederherstellen“ setzt den ganzen Stand zurück, „Aktuellen Stand sichern“ legt eine Momentaufnahme mit Kommentar an.</p>`],
+    ["h-speicher", "Wo werden meine Daten gespeichert?", `<p>Auf claude.ai geöffnet: in Ihrem Konto, privat. Auf der Webseite oder als Datei: im Speicher dieses Browsers (beim Löschen der Browserdaten geht er verloren – exportieren Sie wichtige Stände als Parameterdatei). Gespeichert werden Parameter, Einstellungen, Historie, Szenarien und Ihre letzten Eingaben.</p>`],
+    ["h-grenzen", "Nicht berücksichtigt", `<ul><li>Weitere Einkünfte (Kapitalerträge, Vermietung, Betriebsrenten/Versorgungsbezüge), Sonderausgaben und außergewöhnliche Belastungen außer den Pauschalen, Kinderfreibeträge.</li><li>Hinzurechnungen bei der Gewerbesteuer, Künstlersozialkasse, Krankengeld-Wahltarife.</li><li>Teilrenten, Einzelheiten der Einkommensanrechnung (Kinderzuschläge), Grundsicherung, Wohngeld.</li><li>Kirchensteuer als Sonderausgabe, Steuerermäßigungen (Handwerker, haushaltsnahe Dienstleistungen).</li></ul><p>Alle Angaben ohne Gewähr. Der Rechner ersetzt keine Steuer- oder Rentenberatung.</p>`],
+  ];
+  $("hilfeNav").innerHTML = S.map(([id, t]) => `<a href="#${id}" data-hilfe="${id}">${esc(t)}</a>`).join("");
+  $("hilfeText").innerHTML = S.map(([id, t, h]) => `<h2 id="${id}">${esc(t)}</h2>${h}`).join("");
+}
+function hilfeZeigen(id) { tabWaehlen("hilfe"); const el = $(id); if (el) el.scrollIntoView({behavior: "smooth", block: "start"}); }
+
+/* =====================================================================
+   Start und Ereignisse
+   ===================================================================== */
+function alles() { rechnen(); pruefAnzeigen(); if (zustand.tab === "werte") historieAnzeigen(); if (zustand.tab === "tabelle") tabelleAnzeigen(); }
+function szenarienAnzeigen() { $("szenarioListe").innerHTML = Object.keys(zustand.szenarien).sort().map(n => `<option value="${esc(n)}"></option>`).join(""); }
+
+function verbinden() {
+  document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => tabWaehlen(b.dataset.tab)));
+  document.addEventListener("click", ev => { const a = ev.target.closest("a[data-hilfe]"); if (a) { ev.preventDefault(); hilfeZeigen(a.dataset.hilfe); } });
+  $("eingabe").addEventListener("input", eingabeGeaendert);
+  $("eingabe").addEventListener("change", eingabeGeaendert);
+  $("eingabe").addEventListener("submit", ev => ev.preventDefault());
+  ["tabVon","tabBis","tabSchritt"].forEach(id => $(id).addEventListener("input", tabelleAnzeigen));
+  $("csvExport").onclick = () => tabDaten && dateiSpeichern(`Pensionszuverdienstrechner_Tabelle_${heute()}.csv`, csvText());
+  $("berichtExport").onclick = () => zustand.ergebnis && dateiSpeichern(`Pensionszuverdienstrechner_${heute()}.txt`, berichtText());
+  $("eingabenStandard").onclick = () => { eingabenSetzen(EINGABEN_STANDARD); eingabeGeaendert(); };
+  $("szSpeichern").onclick = async () => {
+    const n = $("szenarioName").value.trim(); if (!n) { zeigeToast("Bitte zuerst einen Namen für das Szenario eingeben."); return; }
+    zustand.szenarien[n] = {...zustand.e}; await Store.set("szenarien", zustand.szenarien); szenarienAnzeigen(); zeigeToast(`Szenario „${n}“ gespeichert.`);
+  };
+  $("szLaden").onclick = () => {
+    const n = $("szenarioName").value.trim(); if (!zustand.szenarien[n]) { zeigeToast("Szenario nicht gefunden."); return; }
+    eingabenSetzen({...EINGABEN_STANDARD, ...zustand.szenarien[n]}); eingabeGeaendert(); zeigeToast(`Szenario „${n}“ geladen.`);
+  };
+  $("szLoeschen").onclick = async () => {
+    const n = $("szenarioName").value.trim(); if (!zustand.szenarien[n]) return;
+    if (!await frage("Szenario löschen", `Szenario „${n}“ löschen?`, "Löschen")) return;
+    delete zustand.szenarien[n]; await Store.set("szenarien", zustand.szenarien); szenarienAnzeigen(); $("szenarioName").value = "";
+  };
+  $("paramSpeichern").onclick = paramSpeichern;
+  $("paramVerwerfen").onclick = paramAnzeigen;
+  $("paramStandard").onclick = async () => {
+    if (!await frage("Standardwerte", "Alle Parameter auf die eingebauten Standardwerte 2026 zurücksetzen?\n\nDer jetzige Stand wird vorher in der Historie gesichert.", "Zurücksetzen")) return;
+    await parameterAendern({...PARAMETER_STANDARD}, "Zurücksetzen auf Standardwerte", {param_jahr: STANDARD_JAHR, param_stand: STANDARD_STAND, param_quelle: EINST_STANDARD.param_quelle});
+    tabModus = null; zeigeToast("Standardwerte 2026 gesetzt.");
+  };
+  $("paramZuWerte").onclick = () => tabWaehlen("werte");
+  $("btnErmitteln").onclick = werteErmitteln;
+  $("btnUmschalten").onclick = entwurfUmschalten;
+  $("btnEntwurfSpeichern").onclick = entwurfSpeichern;
+  $("btnEntwurfAuswahl").onclick = entwurfAuswahl;
+  $("btnEntwurfVerwerfen").onclick = entwurfVerwerfen;
+  $("bannerPruefen").onclick = () => tabWaehlen("werte");
+  $("bannerSpaeter").onclick = async () => {
+    const d = new Date(); d.setDate(d.getDate() + 7); zustand.einst.erinnern_ab = d.toISOString().slice(0, 10);
+    await Store.set("einst", zustand.einst); pruefAnzeigen();
+  };
+  $("paramJahr").addEventListener("change", async () => {
+    const j = parseInt($("paramJahr").value, 10); if (!(j >= 2020 && j <= 2100)) { $("paramJahr").value = zustand.einst.param_jahr; return; }
+    if (j === +zustand.einst.param_jahr) return;
+    await parameterAendern({}, `Wechsel des Werte-Jahres auf ${j}`, {param_jahr: j}); historieAnzeigen();
+  });
+  $("pruefIntervall").addEventListener("change", async () => {
+    const t = parseInt($("pruefIntervall").value, 10); if (!(t >= 0 && t <= 3650)) return;
+    zustand.einst.pruef_intervall_tage = t; await Store.set("einst", zustand.einst); pruefAnzeigen();
+  });
+  $("alsGeprueft").onclick = async () => {
+    Object.assign(zustand.einst, {geprueft_am: heute(), erinnern_ab: ""}); await Store.set("einst", zustand.einst); pruefAnzeigen(); zeigeToast("Prüfdatum gespeichert.");
+  };
+  $("zieljahr").addEventListener("input", quellenAnzeigen);
+  $("textLeeren").onclick = () => { $("seitenText").value = ""; };
+  $("textAuswerten").onclick = async () => {
+    const text = $("seitenText").value;
+    if (text.trim().length < 50) { zeigeToast("Bitte zuerst den Text einer Quelle einfügen."); return; }
+    const j = zieljahr(), titel = text.slice(0, 300);
+    const erg = auswerten([new Seite("eingefügter Seitentext", text, titel)], zustand.p, j);
+    const zeilen = PARAMETER_DEF.filter(d => erg[d[0]]).map(d => { const r = erg[d[0]]; return zeile(d[0], zustand.p[d[0]], r.wert, r.jahr_ok, r.kontext, r.quellen); });
+    await ergebnisZeigen(zeilen, {jahr: j, quelle: "eingefügter Seitentext", stand: heute()});
+  };
+  $("importDatei").addEventListener("change", async ev => {
+    const f = ev.target.files[0]; ev.target.value = ""; if (!f) return;
+    try {
+      const pkt = paketLesen(JSON.parse(await f.text()));
+      await ergebnisZeigen(zeilenAusWerten(zustand.p, pkt.parameter, `Datei ${f.name}`), {jahr: pkt.jahr || +zustand.einst.param_jahr, quelle: pkt.quelle || `Datei ${f.name}`, stand: pkt.stand});
+    } catch (e) { zeigeToast("Datei konnte nicht gelesen werden: " + e.message); }
+  });
+  $("exportDatei").onclick = () => dateiSpeichern(`pensionszuverdienstrechner_de_parameter_${zustand.einst.param_jahr}.json`, JSON.stringify({
+    format: "pensionszuverdienstrechner-de-parameter", version: 1, jahr: +zustand.einst.param_jahr, stand: heute(), quelle: zustand.einst.param_quelle || "", parameter: zustand.p}, null, 2));
+  $("vglStandard").onclick = () => ergebnisZeigen(zeilenAusWerten(zustand.p, PARAMETER_STANDARD, "Im Rechner eingebaute Werte"), {jahr: STANDARD_JAHR, quelle: "Eingebaute Standardwerte 2026", stand: STANDARD_STAND});
+  $("standSichern").onclick = async () => {
+    const k = $("sicherKommentar").value.trim();
+    const e = await Store.historieNeu(historieEintrag("manuell gesichert" + (k ? ": " + k : "")));
+    if (Store.modus === "konto") zustand.historie.unshift(e);
+    $("sicherKommentar").value = ""; historieAnzeigen(); pruefAnzeigen(); zeigeToast("Aktueller Stand in der Historie gesichert.");
+  };
+  $("historie").addEventListener("click", ev => { const b = ev.target.closest("button[data-a]"); if (b) historieAktion(b.dataset.a, +b.closest("tr").dataset.i); });
+  document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !$("modal").hidden) { const b = $("vglAbbr") || $("fNein"); if (b) b.click(); } });
+}
+
+async function start() {
+  paramAufbauen(); hilfeAufbauen(); verbinden();
+  eingabenSetzen(zustand.e); modusAnzeigen(zustand.e); paramAnzeigen();
+  $("zieljahr").value = Math.max(+zustand.einst.param_jahr, new Date().getFullYear());
+  let tab = "berechnung"; try { tab = localStorage.getItem("pzr_de_tab") || tab; } catch (e) {}
+  tabWaehlen(tab); alles();
+  // gespeicherten Stand laden (Konto oder Browser) und neu anzeigen
+  await Store.init();
+  const [p, einst, e, sz, hist] = await Promise.all([Store.get("param"), Store.get("einst"), Store.get("eingaben"), Store.get("szenarien"), Store.historieLaden()]);
+  if (p) zustand.p = {...PARAMETER_STANDARD, ...p};
+  if (einst) zustand.einst = {...EINST_STANDARD, ...einst};
+  if (e) zustand.e = {...EINGABEN_STANDARD, ...e};
+  if (sz) zustand.szenarien = sz;
+  zustand.historie = hist || [];
+  $("chipSpeicher").textContent = Store.modus === "konto" ? "im Konto gespeichert" : "im Browser gespeichert";
+  $("chipSpeicher").dataset.tip = Store.modus === "konto" ? "Ihre Werte, Historie und Szenarien sind in Ihrem claude.ai-Konto gespeichert – privat, nur für Sie." :
+    "Ihre Werte, Historie und Szenarien sind im Speicher dieses Browsers abgelegt. Für eine Sicherung: Reiter „Werte prüfen“ → Werte exportieren.";
+  eingabenSetzen(zustand.e); modusAnzeigen(zustand.e); paramAnzeigen(); szenarienAnzeigen(); hilfeAufbauen();
+  $("zieljahr").value = Math.max(+zustand.einst.param_jahr, new Date().getFullYear());
+  tabModus = null; alles(); if (zustand.tab === "werte") { historieAnzeigen(); quellenAnzeigen(); }
+}
+start();
+</script>
+
+</body>
+</html>
