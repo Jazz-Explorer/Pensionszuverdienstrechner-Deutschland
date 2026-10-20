@@ -1,21 +1,36 @@
 {
  "format": "pensionszuverdienstrechner-de-werte",
  "version": 1,
- "erstellt": "2026-10-19T04:44:31+00:00",
+ "erstellt": "2026-10-20T04:40:21+00:00",
  "jahr": 2026,
  "quellen": [
+  "Gesetz: § 32a EStG – Einkommensteuertarif",
+  "Gesetz: § 3 SolzG – Solidaritätszuschlag",
+  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt",
   "finanz-tools.de – Steuerformeln 2026",
   "lohn-info.de – Sozialversicherung 2026",
   "Haufe – Beitragsbemessungsgrenzen",
   "smart-rechner.de – Hinzuverdienst EM-Rente",
   "steuertipps.de – Witwenrente"
  ],
- "fehler": [
-  "Gesetz: § 32a EStG – Einkommensteuertarif: <urlopen error timed out>",
-  "Gesetz: § 3 SolzG – Solidaritätszuschlag: <urlopen error timed out>",
-  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>"
- ],
+ "fehler": [],
  "werte": {
+  "soli_freigrenze": {
+   "wert": 20350.0,
+   "jahr_ok": false,
+   "kontext": "Gesetz: § 3 SolzG – Solidaritätszuschlag: …in anderen Fällen 20.350 Euro übersteigt. Auf die Einkommensteuer nach §…",
+   "quellen": [
+    "Gesetz: § 3 SolzG – Solidaritätszuschlag"
+   ]
+  },
+  "uebungsleiter_max": {
+   "wert": 3300.0,
+   "jahr_ok": false,
+   "kontext": "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: …Schweiz belegen ist, oder einer unter § 5 Absatz 1 Nummer 9 des Körperschaftsteuergesetzes fallenden Einrichtung bis zur Höhe von insgesamt 3.300 Euro im Jahr. 2 Überschreiten die Einnahmen für d…",
+   "quellen": [
+    "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt"
+   ]
+  },
   "kv_satz": {
    "wert": 14.6,
    "jahr_ok": true,
@@ -125,104 +140,117 @@
   "est_a": {
    "wert": 914.51,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_c1": {
    "wert": 1400.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_b": {
    "wert": 173.1,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_c2": {
    "wert": 2397.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_t1": {
    "wert": 1034.87,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_k4": {
    "wert": 11135.63,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_s4": {
    "wert": 42.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_k5": {
    "wert": 19470.38,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_s5": {
    "wert": 45.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_g0": {
    "wert": 12348.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_g1": {
    "wert": 17799.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_g2": {
    "wert": 69878.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   },
   "est_g3": {
    "wert": 277825.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
    "quellen": [
+    "Gesetz: § 32a EStG – Einkommensteuertarif",
     "finanz-tools.de – Steuerformeln 2026"
    ]
   }
