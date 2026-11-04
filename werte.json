@@ -1,19 +1,19 @@
 {
  "format": "pensionszuverdienstrechner-de-werte",
  "version": 1,
- "erstellt": "2026-11-03T05:01:36+00:00",
+ "erstellt": "2026-11-04T05:06:01+00:00",
  "jahr": 2026,
  "quellen": [
   "finanz-tools.de – Steuerformeln 2026",
   "lohn-info.de – Sozialversicherung 2026",
   "Haufe – Beitragsbemessungsgrenzen",
-  "smart-rechner.de – Hinzuverdienst EM-Rente"
+  "smart-rechner.de – Hinzuverdienst EM-Rente",
+  "steuertipps.de – Witwenrente"
  ],
  "fehler": [
   "Gesetz: § 32a EStG – Einkommensteuertarif: <urlopen error timed out>",
   "Gesetz: § 3 SolzG – Solidaritätszuschlag: <urlopen error timed out>",
-  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>",
-  "steuertipps.de – Witwenrente: HTTP Error 403: Forbidden"
+  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>"
  ],
  "werte": {
   "kv_satz": {
@@ -94,7 +94,8 @@
    "jahr_ok": true,
    "kontext": "lohn-info.de – Sozialversicherung 2026: …Geringfügigkeitsgrenze von 603 Euro ( 603-Euro-Job ). 603,00 € Mindestbemessun…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2026",
+    "steuertipps.de – Witwenrente"
    ]
   },
   "em_voll_grenze": {
@@ -111,6 +112,14 @@
    "kontext": "smart-rechner.de – Hinzuverdienst EM-Rente: …6/8 × 14 × 3.955 Euro = 41.527,50 Euro entspricht 3.460,63 Euro monatlich Persön…",
    "quellen": [
     "smart-rechner.de – Hinzuverdienst EM-Rente"
+   ]
+  },
+  "witwe_freibetrag": {
+   "wert": 1122.53,
+   "jahr_ok": true,
+   "kontext": "steuertipps.de – Witwenrente: …Freibetrag 1.122,53 Euro) Einkommensart Brutto-Grenze Arbeitnehm…",
+   "quellen": [
+    "steuertipps.de – Witwenrente"
    ]
   },
   "est_a": {
