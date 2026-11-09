@@ -1,101 +1,93 @@
 {
  "format": "pensionszuverdienstrechner-de-werte",
  "version": 1,
- "erstellt": "2026-11-08T05:00:05+00:00",
- "jahr": 2026,
+ "erstellt": "2026-11-09T05:13:59+00:00",
+ "jahr": 2027,
  "quellen": [
-  "finanz-tools.de – Steuerformeln 2026",
-  "lohn-info.de – Sozialversicherung 2026",
+  "finanz-tools.de – Steuerformeln 2027",
+  "lohn-info.de – Sozialversicherung 2027",
   "Haufe – Beitragsbemessungsgrenzen",
-  "smart-rechner.de – Hinzuverdienst EM-Rente",
-  "steuertipps.de – Witwenrente"
+  "smart-rechner.de – Hinzuverdienst EM-Rente"
  ],
  "fehler": [
   "Gesetz: § 32a EStG – Einkommensteuertarif: <urlopen error timed out>",
   "Gesetz: § 3 SolzG – Solidaritätszuschlag: <urlopen error timed out>",
-  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>"
+  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>",
+  "steuertipps.de – Witwenrente: The read operation timed out"
  ],
  "werte": {
   "kv_satz": {
    "wert": 14.6,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …allgemeinen Beitragssatzes in der gesetzlichen Krankenversicherung (14,6%), zuzüglich des durchschnittlichen Zusatzbeitrag…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …allgemeiner Beitragssatz von 14,6% + durchschnittlicher Zusatzbeitragssatz + Paus…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "kv_satz_erm": {
    "wert": 14.0,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …ermäßigten Beitragssatz gibt es eine verbindliche Beitragsuntergrenze von 14,0 Prozent (Arbeitnehmer und Arbeitgeber je 7,0 Proz…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …ermäßigten Beitragssatz gibt es eine verbindliche Beitragsuntergrenze von 14,0 Prozent (Arbeitnehmer und Arbeitgeber je 7,0 Proz…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "kv_zusatz": {
    "wert": 2.9,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …durchschnittliche Zusatzbeitragssatz in der gesetzlichen Krankenversicherung steigt für das Jahr 2026 auf 2,9 Prozent (Veröffentlichung im Bundesanzeiger am 10…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …durchschnittliche Zusatzbeitragssatz in der gesetzlichen Krankenversicherung bleibt für das Jahr 2027 bei 2,9 Prozent (Veröffentlichung im Bundesanzeiger am 30…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "pv_satz": {
    "wert": 3.6,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …Pflegeversicherung (3,60%) und zur Arbeitsförderung (2,6%) sowie des all…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …Pflegeversicherung (3,60%) und zur Arbeitsförderung (2,6%) sowie des all…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "pv_kinderlos": {
-   "wert": 0.6,
+   "wert": 0.9,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …ist zum 1. Juli 2023 von 0,35 Prozent auf 0,60 Prozent gestiegen. Beitragssatz Arbeitnehmer mit Beitragszuschlag (außer Sachsen): 1,80% + 0,60% = 2,40% Beitragssatz Arbeitnehmer mit Beitragsz…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …Kinderlose ab 1. Januar 2027 um 0,3 Prozent auf dann insgesamt 0,9 Prozent steigen. Im Referentenentwurf war nur e…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "rv_satz": {
    "wert": 18.6,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …Rentenversicherung 18,6 Prozent und in der knappschaftlichen Rentenversic…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …Rentenversicherung 18,6 Prozent und in der knappschaftlichen Rentenversic…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
-   ]
-  },
-  "kv_bbg": {
-   "wert": 69750.0,
-   "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …Beitragsbemessungsgrenzen 2026 alte und neue Länder (einheitliche Grenze) Kranken- und Pflegeversicherung (jährlich) 69.750,00 € Kranken- und Pflegeversicherung (monatlich) 5…",
-   "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "rv_bbg": {
-   "wert": 101400.0,
+   "wert": 106200.0,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …cherung (jährlich) 69.750,00 € Kranken- und Pflegeversicherung (monatlich) 5.812,50 € Renten- und Arbeitslosenversicherung (jährlich) 101.400,00 € Renten- und Arbeitslosenversicherung (monatli…",
+   "kontext": "Haufe – Beitragsbemessungsgrenzen: …n der allgemeinen Rentenversicherung und in der Arbeitslosenversicherung soll auf 8.850 Euro monatlich angehoben werden, jährlich sind dies 106.200 Euro. In der knappschaftlichen Rentenversicherung…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026"
+    "lohn-info.de – Sozialversicherung 2027",
+    "Haufe – Beitragsbemessungsgrenzen"
    ]
   },
   "bezugsgroesse": {
-   "wert": 47460.0,
+   "wert": 49560.0,
    "jahr_ok": true,
-   "kontext": "smart-rechner.de – Hinzuverdienst EM-Rente: …Bezugsgröße West beträgt 2026: 47.460 Euro Monatlich sind dies 47.460 / 12 = 3.955 Eur…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …Bezugsgröße (jährlich) 49.560,00 € Bezugsgröße (monatlich) 4.130,00 € Weiter…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026",
-    "smart-rechner.de – Hinzuverdienst EM-Rente"
+    "lohn-info.de – Sozialversicherung 2027",
+    "Haufe – Beitragsbemessungsgrenzen"
    ]
   },
   "gfg_monat": {
-   "wert": 603.0,
+   "wert": 633.0,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2026: …Geringfügigkeitsgrenze von 603 Euro ( 603-Euro-Job ). 603,00 € Mindestbemessun…",
+   "kontext": "lohn-info.de – Sozialversicherung 2027: …Geringfügigkeitsgrenze von 633 Euro ( 633-Euro-Job ). 633,00 € Mindestbemessun…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2026",
-    "steuertipps.de – Witwenrente"
+    "lohn-info.de – Sozialversicherung 2027"
    ]
   },
   "em_voll_grenze": {
@@ -106,124 +98,108 @@
     "smart-rechner.de – Hinzuverdienst EM-Rente"
    ]
   },
-  "em_teil_min": {
-   "wert": 41527.5,
-   "jahr_ok": true,
-   "kontext": "smart-rechner.de – Hinzuverdienst EM-Rente: …6/8 × 14 × 3.955 Euro = 41.527,50 Euro entspricht 3.460,63 Euro monatlich Persön…",
-   "quellen": [
-    "smart-rechner.de – Hinzuverdienst EM-Rente"
-   ]
-  },
-  "witwe_freibetrag": {
-   "wert": 1122.53,
-   "jahr_ok": true,
-   "kontext": "steuertipps.de – Witwenrente: …Freibetrag 1.122,53 Euro) Einkommensart Brutto-Grenze Arbeitnehm…",
-   "quellen": [
-    "steuertipps.de – Witwenrente"
-   ]
-  },
   "est_a": {
-   "wert": 914.51,
+   "wert": 952.24,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_c1": {
    "wert": 1400.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_b": {
-   "wert": 173.1,
+   "wert": 170.74,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_c2": {
    "wert": 2397.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_t1": {
-   "wert": 1034.87,
+   "wert": 993.86,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_k4": {
-   "wert": 11135.63,
+   "wert": 11241.73,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_s4": {
    "wert": 42.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_k5": {
-   "wert": 19470.38,
+   "wert": 18741.7,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_s5": {
    "wert": 45.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g0": {
-   "wert": 12348.0,
+   "wert": 12564.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g1": {
    "wert": 17799.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g2": {
-   "wert": 69878.0,
+   "wert": 70600.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g3": {
-   "wert": 277825.0,
+   "wert": 249999.0,
    "jahr_ok": true,
-   "kontext": "finanz-tools.de – Steuerformeln 2026: …(914,51 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 69.878 Euro\\) Liegt das zu versteuern…",
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "finanz-tools.de – Steuerformeln 2026"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   }
  }
