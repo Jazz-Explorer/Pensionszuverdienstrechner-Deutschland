@@ -1,19 +1,19 @@
 {
  "format": "pensionszuverdienstrechner-de-werte",
  "version": 1,
- "erstellt": "2026-11-09T05:13:59+00:00",
+ "erstellt": "2026-11-10T12:37:33+00:00",
  "jahr": 2027,
  "quellen": [
   "finanz-tools.de – Steuerformeln 2027",
   "lohn-info.de – Sozialversicherung 2027",
   "Haufe – Beitragsbemessungsgrenzen",
-  "smart-rechner.de – Hinzuverdienst EM-Rente"
+  "smart-rechner.de – Hinzuverdienst EM-Rente",
+  "steuertipps.de – Witwenrente"
  ],
  "fehler": [
   "Gesetz: § 32a EStG – Einkommensteuertarif: <urlopen error timed out>",
   "Gesetz: § 3 SolzG – Solidaritätszuschlag: <urlopen error timed out>",
-  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>",
-  "steuertipps.de – Witwenrente: The read operation timed out"
+  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>"
  ],
  "werte": {
   "kv_satz": {
@@ -74,11 +74,10 @@
    ]
   },
   "bezugsgroesse": {
-   "wert": 49560.0,
+   "wert": 53452.0,
    "jahr_ok": true,
-   "kontext": "lohn-info.de – Sozialversicherung 2027: …Bezugsgröße (jährlich) 49.560,00 € Bezugsgröße (monatlich) 4.130,00 € Weiter…",
+   "kontext": "Haufe – Beitragsbemessungsgrenzen: …uro jährlich betragen. Vorläufiges Durchschnittsentgelt Rentenversicherung Das vorläufige Durchschnittsentgelt beträgt für das Jahr 2027 53.452 Euro. Rechengrößen 2027 Um die maßgebenden Wert…",
    "quellen": [
-    "lohn-info.de – Sozialversicherung 2027",
     "Haufe – Beitragsbemessungsgrenzen"
    ]
   },
