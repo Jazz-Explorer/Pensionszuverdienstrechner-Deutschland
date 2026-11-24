@@ -1,20 +1,19 @@
 {
  "format": "pensionszuverdienstrechner-de-werte",
  "version": 1,
- "erstellt": "2026-11-23T14:35:43+00:00",
+ "erstellt": "2026-11-24T14:50:54+00:00",
  "jahr": 2027,
  "quellen": [
   "Gesetz: § 32a EStG – Einkommensteuertarif",
   "Gesetz: § 3 SolzG – Solidaritätszuschlag",
   "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt",
+  "finanz-tools.de – Steuerformeln 2027",
   "lohn-info.de – Sozialversicherung 2027",
   "Haufe – Beitragsbemessungsgrenzen",
   "smart-rechner.de – Hinzuverdienst EM-Rente",
   "steuertipps.de – Witwenrente"
  ],
- "fehler": [
-  "finanz-tools.de – Steuerformeln 2027: <urlopen error timed out>"
- ],
+ "fehler": [],
  "werte": {
   "soli_freigrenze": {
    "wert": 20350.0,
@@ -124,107 +123,107 @@
    ]
   },
   "est_a": {
-   "wert": 914.51,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 952.24,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_c1": {
    "wert": 1400.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_b": {
-   "wert": 173.1,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 170.74,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_c2": {
    "wert": 2397.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_t1": {
-   "wert": 1034.87,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 993.86,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_k4": {
-   "wert": 11135.63,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 11241.73,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_s4": {
    "wert": 42.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_k5": {
-   "wert": 19470.38,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 18741.7,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_s5": {
    "wert": 45.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g0": {
-   "wert": 12348.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 12564.0,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g1": {
    "wert": 17799.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g2": {
-   "wert": 69878.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 70600.0,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   },
   "est_g3": {
-   "wert": 277825.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 32a EStG – Einkommensteuertarif: …(914,51 • y + 1.400) • y; 3. von 17.800 Euro bis 69.878 Euro: (173,10 • z + 2.397) • z + 1.034,87; 4. von 69.879 Euro bis 277.825 Euro: 0,42 • x - 11.135,63; 5. von 277.826 Euro an: 0,45 • x - 19.470,38. 3 Die…",
+   "wert": 249999.0,
+   "jahr_ok": true,
+   "kontext": "finanz-tools.de – Steuerformeln 2027: …(952,24 · y + 1.400) · y$$ Hier wird zunächst der Hilfs­wert \\(y\\) bestimmt und daraus im zweiten Schritt die Einkommen­steuer berechnet. Anzeige \\(3. Fall: 17.800 Euro ≤ zvE ≤ 70.600 Euro\\) Liegt das zu versteuern…",
    "quellen": [
-    "Gesetz: § 32a EStG – Einkommensteuertarif"
+    "finanz-tools.de – Steuerformeln 2027"
    ]
   }
  }
