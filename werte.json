@@ -1,36 +1,21 @@
 {
  "format": "pensionszuverdienstrechner-de-werte",
  "version": 1,
- "erstellt": "2026-11-24T14:50:54+00:00",
+ "erstellt": "2026-11-25T14:19:18+00:00",
  "jahr": 2027,
  "quellen": [
-  "Gesetz: § 32a EStG – Einkommensteuertarif",
-  "Gesetz: § 3 SolzG – Solidaritätszuschlag",
-  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt",
   "finanz-tools.de – Steuerformeln 2027",
   "lohn-info.de – Sozialversicherung 2027",
   "Haufe – Beitragsbemessungsgrenzen",
   "smart-rechner.de – Hinzuverdienst EM-Rente",
   "steuertipps.de – Witwenrente"
  ],
- "fehler": [],
+ "fehler": [
+  "Gesetz: § 32a EStG – Einkommensteuertarif: <urlopen error timed out>",
+  "Gesetz: § 3 SolzG – Solidaritätszuschlag: <urlopen error timed out>",
+  "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: <urlopen error timed out>"
+ ],
  "werte": {
-  "soli_freigrenze": {
-   "wert": 20350.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 3 SolzG – Solidaritätszuschlag: …in anderen Fällen 20.350 Euro übersteigt. Auf die Einkommensteuer nach §…",
-   "quellen": [
-    "Gesetz: § 3 SolzG – Solidaritätszuschlag"
-   ]
-  },
-  "uebungsleiter_max": {
-   "wert": 3300.0,
-   "jahr_ok": false,
-   "kontext": "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt: …Schweiz belegen ist, oder einer unter § 5 Absatz 1 Nummer 9 des Körperschaftsteuergesetzes fallenden Einrichtung bis zur Höhe von insgesamt 3.300 Euro im Jahr. 2 Überschreiten die Einnahmen für d…",
-   "quellen": [
-    "Gesetz: § 3 EStG – Übungsleiter/Ehrenamt"
-   ]
-  },
   "kv_satz": {
    "wert": 14.6,
    "jahr_ok": true,
